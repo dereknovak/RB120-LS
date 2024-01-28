@@ -1,0 +1,3 @@
+The method lookup path shows the linear path that is followed when a method is invoked. Ruby searches through this path until a definition is found, executing it immediately. If no method is found, a `NoMethodError` exception is thrown.
+
+Knowing this path is important so that a programmer knows exactly which method invocation will take place, particularly if there are multiple methods on the path with the same name.
