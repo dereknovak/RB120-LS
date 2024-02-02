@@ -1,0 +1,123 @@
+welcome: |
+  Welcome to Rock, Paper, Scissors, Lizard, Spock!
+   
+  What would you like to do?
+  1) New Game
+  2) View Instructions
+  3) Exit Program
+   
+instructions: |
+  Before play:
+
+    - Set up the total number of rounds. To ensure a winner each game, the total rounds
+    must be odd.
+
+      Total Rounds     - 5
+      Winning outcomes - 3, 0
+                         3, 1
+                         3, 2
+
+  Gameplay:
+
+    - Each round, the players select a challenger to compete. Every challenger has 2 others that it will win against.
+
+      * Rock     - Scissors, Lizard                   
+      * Paper    - Rock, Spock                   
+      * Scissors - Paper, Lizard                   
+      * Lizard   - Paper, Spock                   
+      * Spock    - Rock, Scissors
+
+    - If a winning challenger is chosen, the player wins the round.
+    - If a losing challenger is chosen, the computer wins the round.
+    - If the player and computer choose the same challenger, it's a tie. The round is repeated.
+    - After a player wins the majority of the total rounds, they are declared the "GRAND CHAMPION".
+     
+goodbye: |
+  Thank you for playing -- see you next time!
+   
+valid_directory: |
+  Must input 1, 2, or 3.
+   
+continue: Press [ENTER] to continue.
+
+rock: |
+  +-----------------------------+
+  |                             |
+  |       ^^^^^^                |
+  |     /      - \              |
+  |    <   \      >             |
+  |    <  .     - >     ROCK    |
+  |    <    /     >             |
+  |     \        /              |
+  |       vvvvvv                |
+  |                             |
+  +-----------------------------+
+   
+paper: |
+  +-----------------------------+
+  |                             | 
+  |    +----------+             |
+  |    | |        |             |
+  |    | +--------|             |
+  |    | |        |    PAPER    |
+  |    | |        |             |
+  |    | |        |             |
+  |    +----------+             |
+  |                             | 
+  +-----------------------------+
+   
+scissors: |
+  +-----------------------------+
+  |     __      __              |     
+  |    /  \    /  \             |
+  |    \__/    \__/             | 
+  |       \\  //                |   
+  |         []       SCISSORS   | 
+  |       //  \\                |
+  |      //    \\               |
+  |      V      V               | 
+  |                             |  
+  +-----------------------------+
+   
+lizard: |
+  +-----------------------------+
+  |                             |      
+  |    / \  +    +              |
+  |    \ /  |   /               | 
+  |     \-------\               | 
+  |    +-\______ \    LIZARD    |
+  |    _   |    | |             |
+  |    \\__+___/ /              |
+  |     \_______/               |   
+  |                             |       
+  +-----------------------------+
+   
+spock: |
+  +-----------------------------+
+  |                             |   
+  |    | \      / |             |   
+  |     \ \    / /              |  
+  |      \ \  / /               |  
+  |       \  V  \      SPOCK    |  
+  |        |     |              |
+  |    ____|     |              |
+  |    \________/               | 
+  |                             |
+  +-----------------------------+
+   
+blank_square: |
+  +-----------------------------+
+  |                             |
+  |                             |
+  |                             |
+  |                             |
+  |                             |
+  |                             |
+  |                             |
+  |                             |
+  |                             |
+  +-----------------------------+
+   
+divider: |
+  ------------
+   
