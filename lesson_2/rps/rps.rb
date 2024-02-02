@@ -35,23 +35,23 @@ class Move
   end
 
   def rock?
-    @value == 'rock' || 'r'
+    @value == 'rock'
   end
 
   def paper?
-    @value == 'paper' || 'p'
+    @value == 'paper'
   end
 
   def scissors?
-    @value == 'scissors' || 's'
+    @value == 'scissors'
   end
 
   def lizard?
-    @value = 'lizard' || 'l'
+    @value == 'lizard'
   end
 
   def spock?
-    @value = 'spock' || 'sp'
+    @value == 'spock'
   end
 
 
@@ -59,7 +59,7 @@ class Move
     (rock? && (other_move.scissors? || other_move.lizard?)) ||
       (paper? && (other_move.rock? || other_move.spock?)) ||
       (scissors? && (other_move.paper? || other_move.lizard?)) ||
-      (lizard? && (other_move.paper? || other_move.lizard?)) ||
+      (lizard? && (other_move.paper? || other_move.spock?)) ||
       (spock? && (other_move.scissors? || other_move.rock?))
   end
 
@@ -103,7 +103,7 @@ class Human < Player
 
     loop do
       puts "Please choose rock, paper, scissors, lizard, or spock:"
-      choice = gets.chomp
+      choice = gets.chomp.downcase
       break if Move::VALUES.include?(choice)
       puts "Sorry, invalid choice."
     end
@@ -150,7 +150,7 @@ class RPSGame
   def display_moves
     3.times do |counter|
       display_board(counter)
-      sleep(2) if counter < 2
+      sleep(1) if counter < 2
     end
   end
 
