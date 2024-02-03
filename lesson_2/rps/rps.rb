@@ -53,7 +53,6 @@ class Move
   end
 
   def <=>(other)
-    # binding.pry
     if value == other.value
       0
     elsif WINS[value].include?(other.value)
