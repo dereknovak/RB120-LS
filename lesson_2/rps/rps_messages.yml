@@ -40,10 +40,8 @@ goodbye: |
    
 no_stats: |
   GAME STATISTICS
-  
-  Complete a game to access Game Statistics.
 
-  (I see you looking for edge cases...)
+  Complete a game to access Game Statistics.
    
 setup: |
   GAME SETUP
@@ -71,7 +69,7 @@ invalid_move: |
   Must input rock (r), paper (p), scissors (sc), lizard (l), or spock (sp).
     
 invalid_directory: |
-  Must input 1, 2, or 3.
+  Must input 1, 2, 3, or 4.
    
 invalid_total: |
   Invalid number.
@@ -185,7 +183,7 @@ paperspock: |
   Paper disproves Spock...
    
 spockrock: |
-  Spock vapoirzes rock...
+  Spock vaporizes rock...
    
 rockscissors: |
   Rock crushes scissors...
