@@ -1,12 +1,15 @@
 welcome: |
-  Welcome to Rock, Paper, Scissors, Lizard, Spock!
+  === Welcome to Rock, Paper, Scissors, Lizard, Spock! ===
    
   What would you like to do?
   1) New Game
   2) View Instructions
-  3) Exit Program
+  3) View Game Stats
+  4) Exit Program
    
 instructions: |
+  INSTRUCTIONS
+  
   Before play:
 
     - Set up the total number of rounds. To ensure a winner each game, the total rounds
@@ -35,8 +38,47 @@ instructions: |
 goodbye: |
   Thank you for playing -- see you next time!
    
-valid_directory: |
+no_stats: |
+  GAME STATISTICS
+  
+  Complete a game to access Game Statistics.
+
+  (I see you looking for edge cases...)
+   
+setup: |
+  GAME SETUP
+   
+name?: |
+  What is your name?
+   
+again?: |
+  Would you like to play again? (y/n)
+   
+select_move: |
+  Please choose rock, paper, scissors, lizard, or spock.
+  (r, p, sc, l, sp)
+   
+select_total: |
+  How many total rounds will be played?
+  (Odd integers 1-9)
+   
+invalid_name: |
+  Invalid input.
+  Must enter a value.
+   
+invalid_move: |
+  Invalid move.
+  Must input rock (r), paper (p), scissors (sc), lizard (l), or spock (sp).
+    
+invalid_directory: |
   Must input 1, 2, or 3.
+   
+invalid_total: |
+  Invalid number.
+  Must be an odd integer less than 10.
+   
+invalid_response: |
+  Sorry, must be y or n.
    
 continue: Press [ENTER] to continue.
 
@@ -58,7 +100,7 @@ paper: |
   |                             | 
   |    +----------+             |
   |    | |        |             |
-  |    | +--------|             |
+  |    |-+--------|             |
   |    | |        |    PAPER    |
   |    | |        |             |
   |    | |        |             |
@@ -81,7 +123,7 @@ scissors: |
    
 lizard: |
   +-----------------------------+
-  |                             |      
+  |     _                       |      
   |    / \  +    +              |
   |    \ /  |   /               | 
   |     \-------\               | 
@@ -118,5 +160,33 @@ blank_square: |
   |                             |
   +-----------------------------+
    
-hello:
+scissorspaper: |
+  Scissors cuts paper...
+   
+paperrock: |
+  Paper covers rock...
+   
+rocklizard: |
+  Rock crushes lizard...
+   
+lizardspock: |
+  Lizard poisons Spock...
+   
+spockscissors: |
+  Spock smashes scissors...
+   
+scissorslizard: |
+  Scissors decapitates lizard...
+   
+lizardpaper: |
+  Lizard eats paper...
+   
+paperspock: |
+  Paper disproves Spock...
+   
+spockrock: |
+  Spock vapoirzes rock...
+   
+rockscissors: |
+  Rock crushes scissors...
    
