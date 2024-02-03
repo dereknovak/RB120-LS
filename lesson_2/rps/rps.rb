@@ -1,5 +1,4 @@
 require 'yaml'
-require 'pry'
 MESSAGES = YAML.load_file('rps_messages.yml')
 
 module ProgramFunctionality
@@ -300,8 +299,6 @@ class ProgramBootup
 
   attr_accessor :choice
 
-  @@games_played = 0
-
   def initialize
     clear_screen
     directory
@@ -313,7 +310,6 @@ class ProgramBootup
   end
 
   def play_game
-    @@games_played += 1
     RPSGame.new.play
   end
 
