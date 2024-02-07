@@ -6,11 +6,11 @@ class Greeting
     puts message
   end
 
-  # highlight
+# highlight
   def self.greet(message)
     puts message
   end
-  # endhighlight
+# endhighlight
 end
 
 class Hello < Greeting
@@ -18,11 +18,11 @@ class Hello < Greeting
     greet("Hello")
   end
 
-  # highlight
+# highlight
   def self.hi
     greet("Hello")
   end
-  # endhighlight
+# endhighlight
 end
 
 class Goodbye < Greeting
