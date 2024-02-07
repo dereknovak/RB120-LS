@@ -1,0 +1,1 @@
+Adding a `play` instance method to the `Bingo` class would cause that method to be prioritized over `Game#play` when calling it on an object of the `Bingo` class.

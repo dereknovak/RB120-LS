@@ -65,3 +65,64 @@ p Square.new.describe_shape
   # 1. Searches Lexically
   # 2. Searches the Inheritance Chain
   # 3. Checks the Top Scope   
+
+-------------------------
+
+# SPOT SESSION with ESTHER
+
+Encapsulation
+- The data is encap in the object made in the class
+- Restricts access to the state of an object
+- OO gives us a means to encasulate data
+  - level of abstraction
+- MAC is a form of encapsulation
+  - Only for instance methods
+
+POLYMORPHISM
+- Thru inheritance
+  - Class inheritance
+  - Interface inheritance
+- Duck typing
+- Needs to be done with intention
+
+- Constant resolution operator
+  - searches location specified
+    - ONLY the specific container
+  - searches inheritance chain of the specified container
+  - Does NOT search the top level ***
+
+Constant Problem to play around with
+
+```ruby
+WHEELS = 42
+
+module Drivable
+  # WHEELS = 21
+
+  class Car
+    # WHEELS = 4
+    # include Drivable
+
+    def how_many
+      WHEELS
+    end
+  end
+  
+  class Motorcycle
+    WHEELS = 2
+
+    def how_many
+      Drivable::Car::WHEELS
+    end
+  end
+end
+
+
+
+mazda = Drivable::Car.new
+honda = Drivable::Motorcycle.new
+
+puts mazda.how_many #=> 21
+# puts Drivable::Car.ancestors
+puts honda.how_many
+```
