@@ -1,0 +1,1 @@
+The name of the class is printed due to calling the `class` method on `self`. In this situation, `self` refers to the object that the `go_fast` instance method is being called upon. Because `small_car` is an instance of the `Car` class, `self.class` will return `Car`, outputting `I am a Car and going super fast` to the console.

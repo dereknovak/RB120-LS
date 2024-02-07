@@ -1,0 +1,1 @@
+When invoked within an instance method, `self` refers to the current object instance, which in this case is an instance of the `Cat` class. Because we are reassigning the value of `@age` within this method, we have to explicitly indicate `self` when calling the `age=` setter method, as using `age += 1` will assume that a local variable called `age` is initializing. 
