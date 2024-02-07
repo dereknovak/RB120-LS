@@ -1,0 +1,3 @@
+For this example, line 2 would throw a `NoMethodError` complaint, as the `manufacturer` instance method has not been defined. Similarly, line 6 will throw the same complaint, but because the `model` class method has not been defined.
+
+Class methods can only be called on the class itself, and instance methods can only be called on the instance object of a class. A class method is defined using `self.*`, while an instance method simply contains the method name.
