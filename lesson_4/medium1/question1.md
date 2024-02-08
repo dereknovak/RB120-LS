@@ -1,0 +1,1 @@
+Ben is correct in this situation because he included the `attr_reader` keyword and included `:balance`, which creates a getter method for `@balance`. When `balance` is invoked on line 9, it returns the state of `@balance` and compares it with `0`.

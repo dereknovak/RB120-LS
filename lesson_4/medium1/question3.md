@@ -1,0 +1,3 @@
+By adding a setter method to the class, the instance method becomes accessible to the source code outside of the class, which Alan may not want to be possible. It is best practice to keep as much functionality encapsulated within the class as possible. This can allow for specifics of the `update_quantity` instance method to be circumvented by simply using the setter method.
+
+In this scenario, there is the `if` condition that will only allow `@quantity` to be updated if the passed in argument is a positive integer. Theoretically, someone could use the setter method to reassign `@quantity` to a negative integer, which may create issues within the program.
