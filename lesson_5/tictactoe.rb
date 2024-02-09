@@ -7,13 +7,34 @@ module ProgramFunctionality
 end
 
 class Board
+  include ProgramFunctionality
+
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # cols
                   [[1, 5, 9], [3, 5, 7]]              # diag
 
   def initialize
   	@squares = {}
-    (1..9).each { |key| @squares[key] = Square.new }
+    reset
+  end
+
+  def draw
+    clear_screen
+
+    puts "You're a #{human.marker}. Computer is a #{computer.marker}."
+    puts ""
+    puts "     |     |"
+    puts "  #{get_square_at(1)}  |  #{get_square_at(2)}  |  #{get_square_at(3)}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{get_square_at(4)}  |  #{get_square_at(5)}  |  #{get_square_at(6)}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{get_square_at(7)}  |  #{get_square_at(8)}  |  #{get_square_at(9)}"
+    puts "     |     |"
+    puts ""
   end
   
   def get_square_at(key)
@@ -36,17 +57,29 @@ class Board
     !!detect_winner
   end
 
+  def count_human_marker(squares)
+    squares.map(&:marker).count(TTTGame::HUMAN_MARKER)
+  end
+
+  def count_computer_marker(squares)
+    squares.map(&:marker).count(TTTGame::COMPUTER_MARKER)
+  end
+
   # returns winning marker or nil
   def detect_winner
     WINNING_LINES.each do |line|
-      if line.all? { |square| @squares[square].marker == TTTGame::HUMAN_MARKER }
+      if count_human_marker(@squares.values_at(*line)) == 3
         return TTTGame::HUMAN_MARKER
-      elsif line.all? { |square| @squares[square].marker == TTTGame::COMPUTER_MARKER }
+      elsif count_computer_marker(@squares.values_at(*line)) == 3
         return TTTGame::COMPUTER_MARKER
       end
     end
 
     nil
+  end
+
+  def reset
+    (1..9).each { |key| @squares[key] = Square.new }
   end
 end
 
@@ -98,25 +131,6 @@ class TTTGame
   def display_goodbye_message
     puts "Thanks for playing Tic Tac Toe! Goodbye!"
   end
-  
-  def display_board
-    clear_screen
-
-    puts "You're a #{human.marker}. Computer is a #{computer.marker}."
-    puts ""
-    puts "     |     |"
-    puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |  #{board.get_square_at(3)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |  #{board.get_square_at(6)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |  #{board.get_square_at(9)}"
-    puts "     |     |"
-    puts ""
-  end
 
   def human_moves
     puts "Choose a square #{board.unmarked_keys.join(', ')}: "
@@ -136,7 +150,7 @@ class TTTGame
   end
 
   def display_result
-    display_board
+    board.draw
 
     case board.detect_winner
     when human.marker then puts "You won!"
@@ -144,21 +158,42 @@ class TTTGame
     else puts "It's a tie"
     end
   end
+
+  def play_again?
+    puts "Would you like to play again? (y/n)"
+    
+    answer = nil
+    loop do
+      answer = gets.chomp.downcase
+      break if %w(y n).include?(answer)
+      puts "Sorry, must be y or n"
+    end
+
+    answer == 'y'
+  end
   
   def play
     display_welcome_message
-    display_board
 
     loop do
-      human_moves
-      break if board.someone_won? || board.full?
+      board.draw
 
-      computer_moves
-      break if board.someone_won? || board.full?
+      loop do
+        human_moves
+        break if board.someone_won? || board.full?
 
-      display_board
+        computer_moves
+        break if board.someone_won? || board.full?
+
+        board.draw
+      end
+
+      display_result
+      break unless play_again?
+      board.reset
+      puts "Let's play again!"
     end
-    display_result
+
     display_goodbye_message
   end
 end
