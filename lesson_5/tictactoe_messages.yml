@@ -1,6 +1,6 @@
 directory: |
   ====== Welcome to SUPER Tic-Tac-Toe ======
-  
+
   What would you like to do?
   
      1) New Game
@@ -79,27 +79,59 @@ instructions: |
 goodbye: |
   Thank you for playing SUPER Tic-Tac-Toe! Goodbye.
    
-valid_square: Sorry, that's not a valid choice.
-valid_choice: Must input '1', '2', or '3'.
+full_screen: |
+  Please use a full-screen to create the best playing experience.
+   
+human_marker?: |
+  Which character would you like to use as a marker?
+     (Any single character)
+   
+computer_marker?: |
+  Which character would you like the computer to use?
+   
+name?: |
+  What is your name?
+   
+select_total: |
+  Select the total number of rounds:
+     (Odd integer, 1-9)
+   
+valid_square: |
+  Sorry, that's not a valid choice.
+   
+valid_choice: |
+  Must input '1', '2', '3', or '4'.
+   
 valid_turn: |
   Input 'p', 'c', or 'r'.
    
-valid_diff: Input 'b', 'm', 'h', or 'e'.
+valid_diff: |
+  Input 'b', 'm', 'h', or 'e'.
+   
+valid_marker: |
+  Must be a single visible character.
+   
+valid_name: |
+  Must be a single visble word.
+   
 valid_integer: Must be a whole number.
 odd_integer: Must be an odd integer greater than zero.
 too_many: |
   Wow, you're quite an ambitious fellow!
      Let's keep it below 10 rounds for today. :)
-yes_or_no: Invalid choice. Must input 'y' or 'n'.
-tie: |
-  It's a tie!
-   
+yes_or_no: |
+  Invalid choice. Must input 'y' or 'n'.
 again?: |
   Would you like a rematch? (Same rules)
     'Yes'   'No'
    
 thinking:       Computer is thinking...
-continue: Press [ENTER] to continue.
+continue: |
+  Press [ENTER] to continue.
+   
+completed_square: |
+  Square has already been completed.
+   
 rounds?: |
   Choose the total number of rounds:
      1  3  5  7  9
@@ -114,12 +146,28 @@ difficulty: |
    
 setup: |
   ====== GAME SETUP ======
+   
+human_win: |
+  You won!
+   
+computer_win: |
+  Computer won!
+   
+tie: |
+  It's a tie!
+   
+human_takes_square: |
+  The HUMAN Takes a Square!
+   
+computer_takes_square: |
+  The COMPUTER Takes a Square!
+   
 player_champion: |
-  ###   #      ##   #   #  ####  ###
-  #  #  #     #  #  #   #  #     #  #
-  ###   #     ####   ###   ###   ###
-  #     #     #  #    #    #     #  #
-  #     ####  #  #    #    ####  #  #
+  #   #  #   #  #     #   ###   #   #
+  #   #  #   #  ##   ##  #   #  ##  #
+  #####  #   #  # # # #  #####  # # #
+  #   #  #   #  #  #  #  #   #  #  ##
+  #   #   ###   #     #  #   #  #   #
   
   #       #   #####   ##    #    ####
   #       #     #     # #   #   #
@@ -127,8 +175,69 @@ player_champion: |
    #  #  #      #     #   # #       #
     ## ##     #####   #    ##   ####
 
-  The Player is the GRAND CHAMPION!
+  The HUMAN is the GRAND CHAMPION!
    
 computer_champion: |
   The computer is the grand champion... yay.
+   
+board: |
+  #########################
+  #                       #
+  #        |     |        #
+  #     %{one}  |  %{two}  |  %{thr}     #
+  #        |     |        #
+  #   -----+-----+-----   #
+  #        |     |        #
+  #     %{fou}  |  %{fiv}  |  %{six}     #
+  #        |     |        #
+  #   -----+-----+-----   #
+  #        |     |        #
+  #     %{sev}  |  %{eig}  |  %{nin}     #
+  #        |     |        #
+  #                       #
+  #########################
+super_board: |
+  #########################################################################
+  #                       #                       #                       #
+  #  1     |     |        #  2     |     |        #  3     |     |        #
+  #     %{one1}  |  %{one2}  |  %{one3}     #     %{two1}  |  %{two2}  |  %{two3}     #     %{thr1}  |  %{thr2}  |  %{thr3}     #
+  #        |     |        #        |     |        #        |     |        #
+  #   -----+-----+-----   #   -----+-----+-----   #   -----+-----+-----   #
+  #        |     |        #        |     |        #        |     |        #
+  #     %{one4}  |  %{one5}  |  %{one6}     #     %{two4}  |  %{two5}  |  %{two6}     #     %{thr4}  |  %{thr5}  |  %{thr6}     #
+  #        |     |        #        |     |        #        |     |        #
+  #   -----+-----+-----   #   -----+-----+-----   #   -----+-----+-----   #
+  #        |     |        #        |     |        #        |     |        #
+  #     %{one7}  |  %{one8}  |  %{one9}     #     %{two7}  |  %{two8}  |  %{two9}     #     %{thr7}  |  %{thr8}  |  %{thr9}     #
+  #        |     |        #        |     |        #        |     |        #
+  #                       #                       #                       #
+  #########################################################################
+  #                       #                       #                       #
+  #  4     |     |        #  5     |     |        #  6     |     |        #
+  #     %{fou1}  |  %{fou2}  |  %{fou3}     #     %{fiv1}  |  %{fiv2}  |  %{fiv3}     #     %{six1}  |  %{six2}  |  %{six3}     #
+  #        |     |        #        |     |        #        |     |        #
+  #   -----+-----+-----   #   -----+-----+-----   #   -----+-----+-----   #
+  #        |     |        #        |     |        #        |     |        #
+  #     %{fou4}  |  %{fou5}  |  %{fou6}     #     %{fiv4}  |  %{fiv5}  |  %{fiv6}     #     %{six4}  |  %{six5}  |  %{six6}     #
+  #        |     |        #        |     |        #        |     |        #
+  #   -----+-----+-----   #   -----+-----+-----   #   -----+-----+-----   #
+  #        |     |        #        |     |        #        |     |        #
+  #     %{fou7}  |  %{fou8}  |  %{fou9}     #     %{fiv7}  |  %{fiv8}  |  %{fiv9}     #     %{six7}  |  %{six8}  |  %{six9}     #
+  #        |     |        #        |     |        #        |     |        #
+  #                       #                       #                       #
+  #########################################################################
+  #                       #                       #                       #
+  #  7     |     |        #  8     |     |        #  9     |     |        #
+  #     %{sev1}  |  %{sev2}  |  %{sev3}     #     %{eig1}  |  %{eig2}  |  %{eig3}     #     %{nin1}  |  %{nin2}  |  %{nin3}     #
+  #        |     |        #        |     |        #        |     |        #
+  #   -----+-----+-----   #   -----+-----+-----   #   -----+-----+-----   #
+  #        |     |        #        |     |        #        |     |        #
+  #     %{sev4}  |  %{sev5}  |  %{sev6}     #     %{eig4}  |  %{eig5}  |  %{eig6}     #     %{nin4}  |  %{nin5}  |  %{nin6}     #
+  #        |     |        #        |     |        #        |     |        #
+  #   -----+-----+-----   #   -----+-----+-----   #   -----+-----+-----   #
+  #        |     |        #        |     |        #        |     |        #
+  #     %{sev7}  |  %{sev8}  |  %{sev9}     #     %{eig7}  |  %{eig8}  |  %{eig9}     #     %{nin7}  |  %{nin8}  |  %{nin9}     #
+  #        |     |        #        |     |        #        |     |        #
+  #                       #                       #                       #
+  #########################################################################
    

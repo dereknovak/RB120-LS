@@ -126,3 +126,40 @@ puts mazda.how_many #=> 21
 # puts Drivable::Car.ancestors
 puts honda.how_many
 ```
+
+CALEB
+
+https://www.notion.so/RB120-92490135331c4fe299a72bb523bc05cb
+https://docs.google.com/document/d/10JvX-ArkfF8fIWQu8wPaYt7JJHrv_5E0gM0I2uPirwI/edit#
+https://github.com/gontzess/rb120_object_oriented_programming/blob/master/assessment_prep/oral_practice_questions.md
+https://drive.google.com/file/d/1pE1St7TKAqiVPmu-fwuQfiqWrSqxflSN/view
+https://www.scott-hoecker.dev/posts/code_examples/
+https://www.scott-hoecker.dev/posts/rb129-written-assessment-study-questions/
+https://docs.google.com/document/d/1Xf6X6jXi6FhCIR4HLEHpQ5xpY9YEZrq2b7c8Lz2kW4I/edit
+https://docs.google.com/document/d/10Lg5TfMMqtADcHlPKiDUBqPDMB6Q63_Fs_uVGQG3ybQ/edit
+https://jd-launch-school.gitlab.io/launch-school/posts/how-to-take-written-assessment-for-launch-school/
+https://medium.com/launch-school/preparing-for-the-129-interview-assessment-4e6c208ce2e4
+https://seanrichardson95.medium.com/how-i-prepped-for-the-rb129-written-assessment-79b607ec0d88
+https://dev.to/sunnyb/public-vs-private-vs-protected-9hk
+https://www.codewithjason.com/purpose-private-methods-use/
+https://launchschool.com/posts/4113bb2d
+https://medium.com/@wayne_olson/a-mental-model-for-understanding-encapsulation-in-ruby-9c762cde8f05
+https://cirw.in/blog/constant-lookup.html
+https://launchschool.com/posts/fcaa7381
+
+Tree-style tabs
+https://chromewebstore.google.com/detail/tree-style-tab/oicakdoenlelpjnkoljnaakdofplkgnd?pli=1
+
+Polymorphism
+- Inheritance
+  - Class
+  - Interface inheritance
+-Duck
+  - responds 'differently' to a common interface
+
+Encapsulation
+- achieved by creating objects
+- form of data protection
+- Focus more on OOP side with MAC
+
+IDE
