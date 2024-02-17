@@ -154,3 +154,171 @@ Within the `change_info` instance method, *local variables* `name`, `height`, an
 
 To explicitly indicate a setter method within an instance method, it must be prepended by `self.`, such as `self.name = n`. This cannot be confused with a local variable, so Ruby performs the appropriate action. You can also use `@name = n`, however the former is the preferred approach.
 
+# 6
+In the code above, we hope to output `'BOB'` on `line 16`. Instead, we raise an error. Why? How could we adjust this code to output `'BOB'`?
+```ruby
+class Person
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+  
+  def change_name
+    name = name.upcase
+  end
+end
+
+bob = Person.new('Bob')
+p bob.name 
+bob.change_name
+p bob.name
+```
+The `NoMethodError` complaint is due to the assignment of *local variable* `name` to `nil` on line 9. Although we have a `name` setter method defined via `attr_accessor`, Ruby is confused on whether the setter method is being called or a local variable is being assigned, and chooses the local variable. When assigning a local variable, it references the temporary value of `nil` until the right operand of the assignment is evaluated. Because the `upcase` method is instantly called on the local variable `name`, which is `nil`, it throws the exception.
+
+To specify a setter method within a class instance method, it must be prepended with `self.`, so to create no confusion of a local variable. Changing line 9 to `self.name = name.upcase` will reassign `@name` to calling `upcase` on its current value of `'Bob'`, which will now be `'BOB'`.
+
+# 7
+What does the code above output, and why? What does this demonstrate about class variables, and why we should avoid using class variables when working with inheritance?
+```ruby
+class Vehicle
+  @@wheels = 4
+
+  def self.wheels
+    @@wheels
+  end
+end
+
+p Vehicle.wheels                             
+
+class Motorcycle < Vehicle
+  @@wheels = 2
+end
+
+p Motorcycle.wheels                           
+p Vehicle.wheels                              
+
+class Car < Vehicle; end
+
+p Vehicle.wheels
+p Motorcycle.wheels                           
+p Car.wheels 
+```
+Line 9 will output `4`. Because `wheels` is being called on the `Vehicle` class itself, its considered a class method and therefore references the `self.wheels` method within `Vehicle`. This method simply returns the `@@wheels` class variable, which is currently set to `4` from line 2.
+
+Line 15 will output `2`. Because `Motorcycle` inherits from `Vehicle`, its methods become available within the class. Within `Motorcycle`, `@@wheels` is *reassigned* (more on this later) to `2`; therefore, when `wheels` is called on `Motorcycle`, that is what is output.
+
+Line 16 will output `2`. Because `@@wheels` was reassigned on line 12, this change is seen even when calling it on the `Vechicle` class. Class variables are accessible throughout *all instances* of the class; because `Motorcycle` inherits from `Vehicle`, their class variables are shared.
+
+Line 20 will output `2` for the same reason listed above. Although a new `Car` class is defined and inherits from `Vehicle`, it does not reassign the value of `@@wheels`, and therefore it remains the same.
+
+Line 21 will, again, output `2` for the same reason as above. Nothing has been reassigned, and therefore continues to reference `2`.
+
+Line 22 throws a curveball, calling `wheels` on the `Car` class, instead. Although `Car` does *not* inherit from `Motorcycle`, the reassignment is still seen and `2` is again output. Unlike methods, which are only executed when invoked, anything within the scope of a class is evaluated as Ruby moves line-by-line throughout the code. That means that, even without calling `wheels` on any of the classes, `@@wheels` is still initialized on line 2 and reassigned on line 12. Therefore, when calling `wheels` on any object that can access `@@wheels` established within the `Vehicle` class, they will see the value of its last reassignment.
+
+This example demonstrates why it is important to avoid class variables when dealing with inheritance, as the value can change and create inconsistencies within your program. A better approach here would be to use a constant, allowing each vehicle to have its own value for `WHEELS` which can be either inherited from `Vehicle` or overridden to be its own value.
+
+# 8
+What is output and why? What does this demonstrate about `super`?
+```ruby
+class Animal
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+class GoodDog < Animal
+  def initialize(color)
+    super
+    @color = color
+  end
+end
+
+bruno = GoodDog.new("brown")       
+p bruno
+```
+Line 17 will output the `bruno` object ID, which will contain its individual ID and display both its `@name` and `@color` state as `'brown'`.
+
+When instantiated the `bruno` object on line 16, the `initialize` constructor method receives `"brown"` as an argument and binds it to its parameter `color`. Within the method, the `super` keyword is employed, which invokes the method of the same name from its superclass. Because `super` takes no arguments, it automatically passes in `color` as an argument, binding its value `"brown"` to parameter `name`. This value is then assigned to `@name` within `Animal#initialize`, then `@color` within `GoodDog#initialize` afterwards. Because `GoodDog` inherits from `Animal`, both `@name` and `@color` attributes are present, and are seen when outputting the object.
+
+# 9
+What is output and why? What does this demonstrate about `super`? 
+```ruby
+class Animal
+  def initialize
+  end
+end
+
+class Bear < Animal
+  def initialize(color)
+    super
+    @color = color
+  end
+end
+
+bear = Bear.new("black")        
+```
+This example will throw an `ArgumentError` exception. Because the `super` within the `Bear#initialize` constructor method does not specify any arguments, it automatically passes all parameters from the current method to the superclass's method. Unfortunately, `Animal#initialize` does not contain any parameters, yet it is receiving one argument, so Ruby complains.
+
+In order to circumvent this syntax quirk, you can call `super()`, which explicitly indicates that no arguments will be passed to the superclass method, allowing the code to run smoothly.
+
+# 10
+What is the method lookup path used when invoking `#walk` on `good_dog`?
+```ruby
+module Walkable
+  def walk
+    "I'm walking."
+  end
+end
+
+module Swimmable
+  def swim
+    "I'm swimming."
+  end
+end
+
+module Climbable
+  def climb
+    "I'm climbing."
+  end
+end
+
+module Danceable
+  def dance
+    "I'm dancing."
+  end
+end
+
+class Animal
+  include Walkable
+
+  def speak
+    "I'm an animal, and I speak!"
+  end
+end
+
+module GoodAnimals
+  include Climbable
+
+  class GoodDog < Animal
+    include Swimmable
+    include Danceable
+  end
+  
+  class GoodCat < Animal; end
+end
+
+good_dog = GoodAnimals::GoodDog.new
+p good_dog.walk
+```
+The method lookup path will be as follows: GoodAnimals::GoodDog, Danceable, Swimmable, Animal, Walkable.
+
+Some notable reasons for this result:
+- The method lookup path goes in this order.
+1. The current class
+2. Any mixins, moving from last to first included
+3. The inheritance chain of the current class, following the previous steps for each.
+- Because `Walkable` is a mixin for the `GoodDog` superclass, it will be checked after in step 3.
+- While `GoodDog` is namespaced within `GoodAnimals`, its functionality, including the `Climbable` mixin, are not included in the `GoodDog` functionality.
