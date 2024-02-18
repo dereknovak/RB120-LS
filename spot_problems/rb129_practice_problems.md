@@ -454,3 +454,155 @@ This does *not* mean that they are the same objects, only that they share the sa
 ```ruby
 p al.name.equal?(alex.name)  # => false
 ```
+
+# 15
+What is output on `lines 14, 15, and 16` and why?
+```ruby
+class Person
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  def to_s
+    "My name is #{name.upcase!}."
+  end
+end
+
+bob = Person.new('Bob')
+puts bob.name
+puts bob
+puts bob.name
+```
+On line 13, the `bob` object is instantiated, passing the string object `'Bob'` into the `initialize` constructor method and binding it to its parameter `name`. Within this method, the value of `name` is assigned to the `@name` instance variable, creating `'Bob'` as the `name` state for the `bob` object.
+
+On line 14, the `name` getter method, defined by the `attr_reader` keyword, is called, which returns the value of the `name` state, `'Bob'`, outputting it to the console.
+
+On line 15, the `bob` object is output by invocation of the `puts` method. Normally, this would output the object's ID as a string, as `puts` always converts its argument value to a string; however, because the `Person` class defines its own `to_s` method which overrides `Object#to_s`, the output will be `"My name is #{name.upcase!}."`, with the `bob` name state interpolated into the string and uppercased, outputting `My name is BOB.`
+
+On line 16, the `name` state is called again by invocation of the `name` getter method, but its value is changed to `BOB`. This is because, when the `to_s` was called previously, the destructive `upcase!` method was called on `'Bob'`, which returned *and* mutated the state to `'BOB'`.
+
+# 16
+Why is it generally safer to invoke a setter method (if available) vs. referencing the instance variable directly when trying to set an instance variable within the class? Give an example.
+---
+It's generally better to use a setter method over using the instance variable directly when changing its state as the setter method may include additional functionality that allows it to be stored in a specifc manner. This will prevent repetitive code, and make for a cleaner experience.
+
+For example, say you want to change the price of an item you have for sale. You wouldn't want the price to be a negative number, as you would have to pay someone to give it away! Defining specific rules within the setter method will help to prevent these issues from arising.
+```ruby
+class Instrument
+  attr_reader :price
+
+  def initialize(price)
+    @price = price
+  end
+
+  def price=(new_price)
+    if new_price >= 0
+      @price = new_price
+    else
+      puts "Must be a positive number!"
+    end
+  end
+end
+```
+
+# 17
+Give an example of when it would make sense to manually write a custom getter method vs. using `attr_reader`.
+---
+A custom getter method may be useful when dealing with sensitive data. A program that deals with a person SSN may need access to part of the number, but you still need all numbers included in the database for verification purposes. Here, we can use a getter method that only returns the last four digits when called.
+```ruby
+class Person
+  def initialize(name, ssn)
+    @name = name
+    @ssn = ssn
+  end
+
+  def ssn
+    "XXX-XX-#{@ssn.to_s[5, 4]}"
+  end
+end
+
+derek = Person.new('Derek', 123456789)
+puts derek.ssn  # => XXX-XX-6789
+```
+
+# 18
+What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
+```ruby
+class Shape
+  @@sides = nil
+
+  def self.sides
+    @@sides
+  end
+
+  def sides
+    @@sides
+  end
+end
+
+class Triangle < Shape
+  def initialize
+    @@sides = 3
+  end
+end
+
+class Quadrilateral < Shape
+  def initialize
+    @@sides = 4
+  end
+end
+```
+Calling `Triangle.sides` returns `nil`. This is because the `@@sides` class variable is initialized on line 2 to reference `nil`, and calling the `sides` class method returns the value of `@@sides`. Because `Triangle` inherits from the `Shape` class, its behavior will match it.
+
+When instantiating a new `Triangle` object, the `initialize` constructor method *reassigns* the value of `@@sides` to `3`, which is what will be returned when calling the `sides` instance method on the object.
+
+This demonstrates that class variables are scoped at the *class level*, meaning any instances of the class can interact with its value.
+
+# 19
+What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
+---
+The `attr_accessor` method creates both a getter and setter method for its argument attribute. For example, `attr_accessor :name` creates both `name` and `name=` methods for the `@name` instance variable.
+
+There are several reasons you may not want to use `attr_accessor` for all your instance variables. Here are a few:
+- You may want to encapsulate some of the state of your object
+- You may want to be able to assign new state for an attribute, but not allow the user to receive it.
+- You may want the user to be able to receive information about the state of your object, but not be able to change it.
+```ruby
+class Clarinetist
+  attr_accessor :job
+  attr_reader :instrument
+  attr_writer :paycheck
+
+  def initialize(job)
+    @instrument = 'clarinet'
+    @job = job
+  end
+end
+
+derek = Clarinetist.new('teacher')
+derek.paycheck = 'Not enough...'
+```
+Here, we can see and change the job of the clarinetist `derek`, which may be relevant. We can also pay him, but he may not want to share his finances with others. Lastly, we can see he plays the `'clarinet'`, but obviously cannot change that; otherwise, he would no longer be a clarinetist.
+
+# 20
+What is the difference between states and behaviors?
+---
+States refer to the value of an objects attributes, which may represent the cost, color, name, or more of the object. The behaviors represent what the object can do, or its methods with Ruby.
+```ruby
+class Musician
+  def initialize(name, instrument)
+    @name = name
+    @instrument = instrument
+  end
+
+  def play
+    puts "#{@name} is playing their #{@instrument}!"
+  end
+end
+
+derek = Musician.new('Derek', 'clarinet')
+derek.play
+```
+In this example, the `Musician` object `derek` has a state of `'Derek'` for a `name` and `'clarinet'` for the `instrument` they play. `derek` can play his instrument as a behavior by using the `play` instance method, which will output `'Derek is playing their clarinet'`.
