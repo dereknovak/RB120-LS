@@ -18,6 +18,8 @@ roger = Person.new("Roger", "Carpenter")
 puts roger
 ```
 
+My solution
+
 ```ruby
 class Person
   def initialize(name, job)
@@ -48,6 +50,8 @@ end
 puts Human.new("Jo").hair_colour("blonde")  
 puts Human.new.hair_colour("")              
 ```
+
+My solution
 
 ```ruby
 class Human 
@@ -98,6 +102,8 @@ obj3 = ClassB.new
 p obj1 > obj2
 p obj2 > obj3
 ```
+
+My solution
 
 ```ruby
 class ClassA 
@@ -162,6 +168,8 @@ benjamin.die
 p benjamin.actual_age # => 100
 p benjamin.appearance_age # => 0
 ```
+
+My solution
 
 ```ruby
 class BenjaminButton
