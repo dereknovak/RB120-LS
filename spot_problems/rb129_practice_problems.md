@@ -321,4 +321,136 @@ Some notable reasons for this result:
 2. Any mixins, moving from last to first included
 3. The inheritance chain of the current class, following the previous steps for each.
 - Because `Walkable` is a mixin for the `GoodDog` superclass, it will be checked after in step 3.
-- While `GoodDog` is namespaced within `GoodAnimals`, its functionality, including the `Climbable` mixin, are not included in the `GoodDog` functionality.
+- While `GoodDog` is namespaced within `GoodAnimals`, its functionality, including the `Climbable` mixin, are not included in the `GoodDog` functionality because the module was not mixed into it.
+
+# 11
+What is output and why? How does this code demonstrate polymorphism? 
+```ruby
+class Animal
+  def eat
+    puts "I eat."
+  end
+end
+
+class Fish < Animal
+  def eat
+    puts "I eat plankton."
+  end
+end
+
+class Dog < Animal
+  def eat
+     puts "I eat kibble."
+  end
+end
+
+def feed_animal(animal)
+  animal.eat
+end
+
+array_of_animals = [Animal.new, Fish.new, Dog.new]
+array_of_animals.each do |animal|
+  feed_animal(animal)
+end
+```
+On line 23, local variable `array_of_animals` is initialized and references an array of custom objects: an `Animal`, `Fish` and `Dog` objects. The `each` method is called on `array_of_animals` and gets passed a `do...end` block as an argument, binding each object to the parameter `animal` throughout iteration. Upon each iteration of the block, the defined `feed_animal` method is called on the current object referenced by `animal`, which invokes each `eat` method that corresponds to the object's class, outputting `I eat.`, `I eat plankton.`, and `I eat kibble.` to the console.
+
+This example demonstrates polymorphism via class inheritance, which occurs when a class's subclasses contain an instance method of the same name, producing a variety of results based on the implementation of the method. Each class defines a unique implementation of the `eat` instance method that overrides the `Animal` superclass's definition, outputting a unique variation of the method.
+
+# 12
+We raise an error in the code above. Why? What do `kitty` and `bud` represent in relation to our `Person` object? 
+```ruby
+class Person
+  attr_accessor :name, :pets
+
+  def initialize(name)
+    @name = name
+    @pets = []
+  end
+end
+
+class Pet
+  def jump
+    puts "I'm jumping!"
+  end
+end
+
+class Cat < Pet; end
+
+class Bulldog < Pet; end
+
+bob = Person.new("Robert")
+
+kitty = Cat.new
+bud = Bulldog.new
+
+bob.pets << kitty
+bob.pets << bud                     
+
+bob.pets.jump 
+```
+Line 28 throws a `NoMethodError` exception due to the attempt to call the `jump` method on an array object. While the `jump` instance method exists within the `Pet` class, and both `Cat` and `Bulldog` inherit from the class, `jump` can only be called on the object itself, not the array housing them. Both `kitty` and `bud` are objects of the `Cat` and `Bulldog` class, respectively, and are housed in an array object referenced by the `bob` object's `pets` attribute. In order to invoke the `jump` method on each of these objects, we should call the iterative `each` method on `bob.pets` and call `jump` on each object throughout iteration.
+```ruby
+bob.pets.each(&:jump)
+```
+
+# 13
+What is output and why?
+```ruby
+class Animal
+  def initialize(name)
+    @name = name
+  end
+end
+
+class Dog < Animal
+  def initialize(name); end
+
+  def dog_name
+    "bark! bark! #{@name} bark! bark!"
+  end
+end
+
+teddy = Dog.new("Teddy")
+puts teddy.dog_name
+```
+Line 16 will output `bark! bark!  bark! bark!`. When the `teddy` object is instantiated, the `Dog#initialize` constructor method is called, which performs no action. Although the class inherits from `Animal`, and `Animal#initialize` assigns the `@name` instance variable, this method is not invoked due to `Dog#initialize` overriding it. Therefore, when the `dog_name` instance method is called, `@name` references `nil` which gets interpolated into the string `"bark! bark! #{@name} bark! bark!"`.
+
+Instance variables, unlike local variables, take on the default value of `nil` when called if they have not been assigned previously.
+
+# 14
+In the code above, we want to compare whether the two objects have the same name. `Line 11` currently returns `false`. How could we return `true` on `line 11`? 
+
+Further, since `al.name == alex.name` returns `true`, does this mean the `String` objects referenced by `al` and `alex`'s `@name` instance variables are the same object? How could we prove our case?
+```ruby
+class Person
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+al = Person.new('Alexander')
+alex = Person.new('Alexander')
+p al == alex # => true
+```
+There are a couple of different ways to return `true` on line 11.
+1. On line 11, call the `name` getter method for both `al` and `alex` objects while comparing them.
+```ruby
+p al.name == alex.name
+```
+2. Define a `==` method within the `Person` class, which compares the current `name` with another `name` using `other` as a parameter.
+```ruby
+class Person
+  # Omitted
+  
+  def ==(other)
+    name == other.name
+  end
+end
+```
+This does *not* mean that they are the same objects, only that they share the same value. The `==` method only compares the values of the objects. This can be checked by changing the method to `equal?`, which checks whether the objects, strings in this case, are the same.
+```ruby
+p al.name.equal?(alex.name)  # => false
+```
