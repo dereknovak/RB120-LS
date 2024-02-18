@@ -485,7 +485,7 @@ On line 16, the `name` state is called again by invocation of the `name` getter 
 
 # 16
 Why is it generally safer to invoke a setter method (if available) vs. referencing the instance variable directly when trying to set an instance variable within the class? Give an example.
----
+-
 It's generally better to use a setter method over using the instance variable directly when changing its state as the setter method may include additional functionality that allows it to be stored in a specifc manner. This will prevent repetitive code, and make for a cleaner experience.
 
 For example, say you want to change the price of an item you have for sale. You wouldn't want the price to be a negative number, as you would have to pay someone to give it away! Defining specific rules within the setter method will help to prevent these issues from arising.
@@ -562,7 +562,7 @@ This demonstrates that class variables are scoped at the *class level*, meaning 
 
 # 19
 What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
----
+-
 The `attr_accessor` method creates both a getter and setter method for its argument attribute. For example, `attr_accessor :name` creates both `name` and `name=` methods for the `@name` instance variable.
 
 There are several reasons you may not want to use `attr_accessor` for all your instance variables. Here are a few:
@@ -588,8 +588,8 @@ Here, we can see and change the job of the clarinetist `derek`, which may be rel
 
 # 20
 What is the difference between states and behaviors?
----
-States refer to the value of an objects attributes, which may represent the cost, color, name, or more of the object. The behaviors represent what the object can do, or its methods with Ruby.
+-
+States refer to the value of an object's attributes, which may represent the cost, color, name, or more of the object. The behaviors represent what the object can do, or its methods with Ruby.
 ```ruby
 class Musician
   def initialize(name, instrument)
@@ -605,4 +605,4 @@ end
 derek = Musician.new('Derek', 'clarinet')
 derek.play
 ```
-In this example, the `Musician` object `derek` has a state of `'Derek'` for a `name` and `'clarinet'` for the `instrument` they play. `derek` can play his instrument as a behavior by using the `play` instance method, which will output `'Derek is playing their clarinet'`.
+In this example, the `Musician` object `derek` has a state of `'Derek'` for a `name` and `'clarinet'` for the `instrument` they play. `derek` can play his instrument as a behavior by using the `play` instance method, which will output `Derek is playing their clarinet!`.
