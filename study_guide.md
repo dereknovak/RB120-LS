@@ -4,10 +4,10 @@
 
 "Object Oriented Programming is a programming paradigm that was created to deal with the growing complexity of large software systems."
 
-Object Oriented Programming is a programming paradigm that was formed as a response to the growing complexity of large software systems, taking concepts such as variables and methods and transforming them into nouns and verbs. This new approach segregated data storage and functionality in small chunks that come together to perform larger tasks, allowing for cleaner maintenance and clearer code.
+Object Oriented Programming is a programming paradigm that was formed as a response to the growing complexity of large software systems, dividing data storage and functionality into small chunks that come together to perform larger tasks.
 
 ### Benefits of using OOP:
-1. Creating objects allows for better abstraction with their code.
+1. Creating objects allows for better code abstraction
 2. Objects and methods are represented with nouns and verbs
 3. Functionality of the code is much easier to manipulate, preventing namespacing issues.
 4. Duplication is avoided through the use of inheritance.
@@ -23,8 +23,28 @@ Classes represent the attributes and behaviors that exist within an object. A cl
 class Musician
   # Attributes and Behaviors...
 end
+
+michael = Musician.new  # <= Object is instantiated
 ```
 
+## Module
+
+"A module is a collection of behaviors that is usable in other classes via mixins."
+
+
+A module contains a collection of behaviors that can used by other classes through mixins. They can also be used to group similar methods together via *namespacing*, allowing more organized code and preventing collisions through similarly named classes.
+
+### Mixin
+
+A mixin refers to a module that has been "mixed-in" to a class via the `include` keyword, allowing its behaviors to be used within the class.
+
+### Namespacing
+
+"Namespacing means organizing similar classes under a module."
+
+```ruby
+
+```
 ## Attributes
 
 "We can think of attributes as the different charactersistic that make up an object."
@@ -101,7 +121,90 @@ puts buffet_tosca.nicer_than?(selmer_privilege)  # true
 
 "Polymorphism is the ability for different types of data to respond to a common interface."
 
-Polymorphism is the ability for multiple data types to respond differently to a common interface (methods).
+Polymorphism is the ability for multiple data types to respond differently to a common interface (methods). Two forms of Polymorphism exist within Object Oriented Programming: Polymorphism via inheritance and Duck Typing.
+
+### Polymorphism via inheritance
+
+Polymorphism via inheritance can be achieved through two different approaches, *class* and *interface* inheritance.
+
+Class inheritance use a behavior from a shared parent-class, allowing each subclass to respond to it. Individual subclasses may have unique implemetation of the behavior, *overriding* its execution.
+
+```ruby
+class Musician
+  def play
+    "Playing my "
+  end
+end
+
+class Clarinetist < Musician
+  def play
+    puts super + 'clarinet'
+  end
+end
+
+class Violinist < Musician
+  def play
+    puts super + 'violin'
+  end
+end
+
+claire = Clarinetist.new
+victor = Violinist.new
+
+[claire, victor].each(&:play)
+```
+
+Interface inheritance uses mixins to share a behavior with various classes, allowing each object from those classes the ability to respond to the behavior.
+
+```ruby
+module Runable
+  def run
+    puts "I'm running!"
+  end
+end
+
+class Athlete
+  include Runable
+end
+
+class Dog
+  include Runable
+end
+
+aaron = Athlete.new
+max = Dog.new
+
+[aaron, max].each(&:run)
+```
+
+*** When deciding on whether to use class inheritance or a mixin, first determine what kind of relationship it shares with the class. If it employs a 'is a' relationship, class inheritance should be used, while 'has a' relationships should use a mixin.
+
+### Duck typing
+
+"Duck typing occurs when objects of different *unrelated* types both respond to the same method name."
+
+Duck typing, stemmed from the phrase "if it walks and talks like a duck, it must be a duck," occurs when multiple classes share a common behavior, allowing objects from either class the ability to respond to it. While the objects should be unrelated, their behaviors should perform a similar action.
+
+```ruby
+class Duck
+ def quack
+   puts "Quack, quack, quack!"
+ end
+end
+
+class Impressionist
+ def quack
+   puts "Quack, quack, quack!"
+ end
+end
+
+donald = Duck.new
+tom = Impressionist.new
+
+[donald, tom].each(&:quack)
+```
+
+
 -------------------------------
 
 ## Classes and Objects
@@ -128,11 +231,11 @@ Polymorphism is the ability for multiple data types to respond differently to a 
 
 ## Polymorphism
 
-# Modules and their use cases
+## Modules and their use cases
 
 ## Method lookup path
 
-# self
+## self
 
 ## Reading OO code
 
