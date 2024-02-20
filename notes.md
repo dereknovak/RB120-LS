@@ -163,3 +163,23 @@ Encapsulation
 - Focus more on OOP side with MAC
 
 IDE
+
+SPOT with Kana
+
+- creating objects encapsulates state
+
+Encapsulation lets us hide the internal representation of an object from the outside and only expose the methods and properties that users of the object need. We can use method access control to expose these properties and methods through the public (or external) interface of a class: its public methods.
+
+# class Coffee
+#   def grind
+#     puts "Grinding beans into grounds."
+#   end
+# end
+
+# class Pepper
+#   def grind
+#     puts "Grinding pepper on my steak."
+#   end
+# end
+
+# [Coffee.new, Pepper.new].each(&:grind)
