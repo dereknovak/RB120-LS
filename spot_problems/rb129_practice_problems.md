@@ -542,7 +542,8 @@ end
 
 Give an example of when it would make sense to manually write a custom getter method vs. using `attr_reader`.
 
----
+-
+
 A custom getter method may be useful when dealing with sensitive data. A program that deals with a person SSN may need access to part of the number, but you still need all numbers included in the database for verification purposes. Here, we can use a getter method that only returns the last four digits when called.
 
 ```ruby
@@ -601,6 +602,7 @@ This demonstrates that class variables are scoped at the *class level*, meaning 
 What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
 
 -
+
 The `attr_accessor` method creates both a getter and setter method for its argument attribute. For example, `attr_accessor :name` creates both `name` and `name=` methods for the `@name` instance variable.
 
 There are several reasons you may not want to use `attr_accessor` for all your instance variables. Here are a few:
