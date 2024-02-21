@@ -1,4 +1,27 @@
-# Concepts
+# RB120 Concepts
+
+## Navigation
+
+[What is OOP?](#what-is-object-oriented-programming)
+[Benefits of OOP](#benefits-of-using-oop)
+[Class and Objects](#classes-and-objects)
+[Instance Variables](#instance-variable)
+[Class Variables](#class-variable)
+[Constants](#constants)
+[Constructor Method](#constructor-method)
+[Getter/Setter](#getter-and-setter-methods)
+[Instance Method vs Class Method](#instance-method-vs-class-method)
+[Module](#module)
+[Attributes](#attributes)
+[Encapsulation](#encapsulation)
+[Polymorphism](#polymorphism)
+[Collaborator Objects](#collaborator-objects)
+[Method Lookup Path](#method-lookup-path)
+[self](#self)
+[super](#super)
+[Class Inheritance vs Mixin](#class-inheritance-vs-mixin)
+[Equivalence](#equivalence)
+[Fake Operators](#fake-operators)
 
 ## What is Object Oriented Programming?
 
@@ -26,6 +49,10 @@ end
 
 michael = Musician.new  # <= Object is instantiated
 ```
+
+## Instance Variable
+
+Instance variables are variables that are scoped at the *object level*, making them only available within the current instance of the class.
 
 ## Class Variable
 
@@ -143,6 +170,35 @@ jimmy.gender = 'Non-binary'
 jimmy.gender  # => NoMethodError
 ```
 
+## Instance method vs Class method
+
+-nstance methods can be called on any instantiated object within its respective class, while class methods are only called on the class itself and can be called without any objects instantiated. While an instance method has a standard `def...end` definition within the class structure, a class method *must* be prepended with `self.` (`self.my_method`).
+
+```ruby
+class Musician
+  @@total_musicians = 0
+
+  def initialize(name, instrument)
+    @name = name
+    @instrument = instrument
+    @@total_musicians += 1
+  end
+
+  def self.total
+    @@total_musicians
+  end
+
+  def play
+    puts "#{@name} is playing their #{@instrument}."
+  end
+end
+
+derek = Musician.new('Derek', 'clarinet')
+bob = Musician.new('Bob', 'saxophone')
+
+derek.play
+puts Musician.total
+```
 ## Module
 
 "A module is a collection of behaviors that is usable in other classes via mixins."
@@ -185,9 +241,9 @@ end
 
 ## Encapsulation
 
-"Encapsulation is hiding pieces of functionality and making it unavailable to the rest of the code base."
+"Encapsulation lets us hide the internal representation of an object from the outside and only expose the methods and properties that users of the object need."
 
-Encapsulation occurs by hiding pieces of functionality, making it unavailable to the rest of the codebase. In Object Oriented Programming, this is primarily achieved through Method Access Control, which allows or restricts this functionality by implementation of public, protected, or private attributes or behaviors.
+Encapsulation allows us to hide the state of an object from outside its resepctive class, exposing only the attributes and behaviors required by the users. In Object Oriented Programming, this is primarily achieved through Method Access Control, which allows or restricts these properties by the  implementation of public, protected, or private methods.
 
 ### Method Access Control
 
@@ -311,22 +367,67 @@ max = Dog.new
 Duck typing, stemmed from the phrase "if it walks and talks like a duck, it must be a duck," occurs when multiple classes share a common behavior, allowing objects from either class the ability to respond to it. While the objects should be unrelated, their behaviors should perform a similar action.
 
 ```ruby
-class Duck
- def quack
-   puts "Quack, quack, quack!"
- end
+class CashRegister
+  def refill
+    puts "Putting money into the register."
+  end
 end
 
-class Impressionist
- def quack
-   puts "Quack, quack, quack!"
- end
+class Drink
+  def refill
+    puts "Topping off the customer's cup."
+  end
 end
 
-donald = Duck.new
-tom = Impressionist.new
+[CashRegister.new, Drink.new].each(&:refill)
+```
 
-[donald, tom].each(&:quack)
+## Collaborator Objects
+
+"Objects that are stored as state within another object are also called "collaborator objects". We call such objects collaborators because they work in conjunction (or in collaboration) with the class they are associated with."
+
+"Collaborator objects allow you to chop up and modularize the problem domain into cohesive pieces"
+
+Collaborator objects are objects that are stored as state within another object. While these can include any kind of object, including strings, numbers, arrays, and so on, they typically reference *custom objects*, and a collaborative relationship is established between the two classes. This allows the programmer to further divide their codebase into smaller, cohesive pieces.
+
+```ruby
+class Musician
+  def initialize(name, instrument)
+    @name = name
+    @instrument = instrument
+  end
+end
+
+class Instrument
+  def initialize(type)
+    @type = type
+  end
+end
+
+clarinet = Instrument.new('clarinet')
+derek = Musician.new('Derek', clarinet)
+```
+
+## self
+
+In Ruby, `self` represents the *calling object* and is used to disambiguate the intention of a method call. When used within an instance method, `self` represents the current instance of the class; outside of that, including within a class method defintion, it represents the class or module itself.
+
+```ruby
+module Drivable
+  def drive
+    puts "Driving my #{self.class.to_s.downcase}."
+  end
+end
+
+class Vehicle
+  include Drivable
+end
+
+class Car < Vehicle; end
+class Truck < Vehicle; end
+
+Car.new.drive
+Truck.new.drive
 ```
 
 ## Method Lookup Path
@@ -382,7 +483,31 @@ The `eql?` method compares its two operands, returning `true` if both the class 
 
 "It only looks like an operator because Ruby gives us special syntactical sugar when invoking that method."
 
-Many of the "operators" that are used throughout the Ruby language are methods disguised as operators through the use of *syntactical sugar*, allowing the code to be more readable and predictable.
+Many of the "operators" that are used throughout the Ruby language are methods calls *disguised* as operators through the use of *syntactical sugar*, allowing the code to be more readable and predictable. We call these **fake operators**.
+
+While many of the pre-existing Ruby classes and modules have their own defintions to these methods, a custom class does not by default; therefore, if we wish to implement its functionality into our program, we have to define its operation.
+
+```ruby
+class Person
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+
+  def >(other)
+    age > other.age
+  end
+
+  protected
+
+  attr_reader :age
+end
+
+sally = Person.new('Sally', 32)
+barbara = Person.new('Barbara', 55)
+
+sally > barbara  # => false
+```
 
 Actual Ruby Operators:
 - All assignment operators, *except* `[]=`
@@ -393,21 +518,9 @@ Actual Ruby Operators:
 -------------------------------
 
 
-## Instance variables
-
-
-## Instance methods vs Class methods
-
-
-## Modules and their use cases
-
-
-## self
 
 ## Reading OO code
 
-
-## Working with collaborator objects
 
 ## Create a code spike
 

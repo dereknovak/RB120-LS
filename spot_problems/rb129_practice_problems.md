@@ -1,5 +1,7 @@
 # 1
+
 What is output and why? What does this demonstrate about instance variables that differentiates them from local variables?
+
 ```ruby
 class Person
   attr_reader :name
@@ -17,7 +19,9 @@ This example will output `nil`. Because the `:name` getter method is defined usi
 This problem showcases a couple of different aspects between local variables and instance variables. First, instance variables are scoped at the *object level*, allowing them to be accessible throughout the entire instance of a class, while local variables are only available within the scope in which it is defined. Secondly, when defining a getter method, an instance variable automatically takes on the value of `nil`, even if nothing has been explicitly assigned to it, while local variables *must always* be explicitly defined in order to be accessible.
 
 # 2
+
 What is output and why? What does this demonstrate about instance variables?
+
 ```ruby
 module Swimmable
   def enable_swimming
@@ -41,7 +45,9 @@ This example will output `nil`. Although the `enable_swimming` instance method i
 This demonstrates how instance variables automatically take on the value of `nil` even if not explicitly defined. Had this been a local variable, a `NameError` exception would have been thrown.
 
 # 3
+
 What is output and why? What does this demonstrate about constant scope? What does `self` refer to in each of the 3 methods above? 
+
 ```ruby
 module Describable
   def describe_shape
@@ -78,7 +84,9 @@ Line 26 works in a similar fashion, but instead called the `sides` instance meth
 Line 27 acts differently than the previous 2 lines, accessing the mixed-in `describe_shape` instance method, which returns `"I am a #{self.class} and have #{SIDES} sides."`. First off, `self` again references the calling object, which is the current instance of the `Square` class. For `SIDES`, Ruby looks lexically within the `Swimmable` module and is unable to find a value. Then, it follows the inheritance chain of `Swimmable`, again unable to find a reference. Lastly, it checks the main scope, and still cannot locate a value, so it throws a `NameError` exception, due to the inability to find a value for `SIDES`.
 
 # 4
+
 What is output? Is this what we would expect when using `AnimalClass#+`? If not, how could we adjust the implementation of `AnimalClass#+` to be more in line with what we'd expect the method to return?
+
 ```ruby
 class AnimalClass
   attr_accessor :name, :animals
@@ -122,7 +130,9 @@ p some_animal_classes
 This example outputs an array containing all `Animal` class objects from both `mammals` and `birds`, in their object ID format. It's not explicit what may have been intended to be output, but the logic seems to line up, considering the `AnimalClass#+` instance method returns the concatenation of the `animals` states from both objects. If a clearer representation of the animals is intended, then the `name` should be called on each `Animal` object before the arrays are contenated together, returning the array `['Human', 'Dog', 'Cat', 'Eagle', 'Blue Jay', 'Penguin']`.
 
 # 5
+
 We expect the code above to output `”Spartacus weighs 45 lbs and is 24 inches tall.”` Why does our `change_info` method not work as expected?
+
 ```ruby
 class GoodDog
   attr_accessor :name, :height, :weight
@@ -179,7 +189,9 @@ The `NoMethodError` complaint is due to the assignment of *local variable* `name
 To specify a setter method within a class instance method, it must be prepended with `self.`, so to create no confusion of a local variable. Changing line 9 to `self.name = name.upcase` will reassign `@name` to calling `upcase` on its current value of `'Bob'`, which will now be `'BOB'`.
 
 # 7
+
 What does the code above output, and why? What does this demonstrate about class variables, and why we should avoid using class variables when working with inheritance?
+
 ```ruby
 class Vehicle
   @@wheels = 4
@@ -219,7 +231,9 @@ Line 22 throws a curveball, calling `wheels` on the `Car` class, instead. Althou
 This example demonstrates why it is important to avoid class variables when dealing with inheritance, as the value can change and create inconsistencies within your program. A better approach here would be to use a constant, allowing each vehicle to have its own value for `WHEELS` which can be either inherited from `Vehicle` or overridden to be its own value.
 
 # 8
+
 What is output and why? What does this demonstrate about `super`?
+
 ```ruby
 class Animal
   attr_accessor :name
@@ -244,7 +258,9 @@ Line 17 will output the `bruno` object ID, which will contain its individual ID 
 When instantiated the `bruno` object on line 16, the `initialize` constructor method receives `"brown"` as an argument and binds it to its parameter `color`. Within the method, the `super` keyword is employed, which invokes the method of the same name from its superclass. Because `super` takes no arguments, it automatically passes in `color` as an argument, binding its value `"brown"` to parameter `name`. This value is then assigned to `@name` within `Animal#initialize`, then `@color` within `GoodDog#initialize` afterwards. Because `GoodDog` inherits from `Animal`, both `@name` and `@color` attributes are present, and are seen when outputting the object.
 
 # 9
+
 What is output and why? What does this demonstrate about `super`? 
+
 ```ruby
 class Animal
   def initialize
@@ -265,7 +281,9 @@ This example will throw an `ArgumentError` exception. Because the `super` within
 In order to circumvent this syntax quirk, you can call `super()`, which explicitly indicates that no arguments will be passed to the superclass method, allowing the code to run smoothly.
 
 # 10
+
 What is the method lookup path used when invoking `#walk` on `good_dog`?
+
 ```ruby
 module Walkable
   def walk
@@ -324,7 +342,9 @@ Some notable reasons for this result:
 - While `GoodDog` is namespaced within `GoodAnimals`, its functionality, including the `Climbable` mixin, are not included in the `GoodDog` functionality because the module was not mixed into it.
 
 # 11
+
 What is output and why? How does this code demonstrate polymorphism? 
+
 ```ruby
 class Animal
   def eat
@@ -358,7 +378,9 @@ On line 23, local variable `array_of_animals` is initialized and references an a
 This example demonstrates polymorphism via class inheritance, which occurs when a class's subclasses contain an instance method of the same name, producing a variety of results based on the implementation of the method. Each class defines a unique implementation of the `eat` instance method that overrides the `Animal` superclass's definition, outputting a unique variation of the method.
 
 # 12
+
 We raise an error in the code above. Why? What do `kitty` and `bud` represent in relation to our `Person` object? 
+
 ```ruby
 class Person
   attr_accessor :name, :pets
@@ -395,7 +417,9 @@ bob.pets.each(&:jump)
 ```
 
 # 13
+
 What is output and why?
+
 ```ruby
 class Animal
   def initialize(name)
@@ -419,9 +443,11 @@ Line 16 will output `bark! bark!  bark! bark!`. When the `teddy` object is insta
 Instance variables, unlike local variables, take on the default value of `nil` when called if they have not been assigned previously.
 
 # 14
+
 In the code above, we want to compare whether the two objects have the same name. `Line 11` currently returns `false`. How could we return `true` on `line 11`? 
 
 Further, since `al.name == alex.name` returns `true`, does this mean the `String` objects referenced by `al` and `alex`'s `@name` instance variables are the same object? How could we prove our case?
+
 ```ruby
 class Person
   attr_reader :name
@@ -456,7 +482,9 @@ p al.name.equal?(alex.name)  # => false
 ```
 
 # 15
+
 What is output on `lines 14, 15, and 16` and why?
+
 ```ruby
 class Person
   attr_reader :name
@@ -484,11 +512,14 @@ On line 15, the `bob` object is output by invocation of the `puts` method. Norma
 On line 16, the `name` state is called again by invocation of the `name` getter method, but its value is changed to `BOB`. This is because, when the `to_s` was called previously, the destructive `upcase!` method was called on `'Bob'`, which returned *and* mutated the state to `'BOB'`.
 
 # 16
+
 Why is it generally safer to invoke a setter method (if available) vs. referencing the instance variable directly when trying to set an instance variable within the class? Give an example.
+
 -
 It's generally better to use a setter method over using the instance variable directly when changing its state as the setter method may include additional functionality that allows it to be stored in a specifc manner. This will prevent repetitive code, and make for a cleaner experience.
 
 For example, say you want to change the price of an item you have for sale. You wouldn't want the price to be a negative number, as you would have to pay someone to give it away! Defining specific rules within the setter method will help to prevent these issues from arising.
+
 ```ruby
 class Instrument
   attr_reader :price
@@ -508,9 +539,12 @@ end
 ```
 
 # 17
+
 Give an example of when it would make sense to manually write a custom getter method vs. using `attr_reader`.
+
 ---
 A custom getter method may be useful when dealing with sensitive data. A program that deals with a person SSN may need access to part of the number, but you still need all numbers included in the database for verification purposes. Here, we can use a getter method that only returns the last four digits when called.
+
 ```ruby
 class Person
   def initialize(name, ssn)
@@ -528,7 +562,9 @@ puts derek.ssn  # => XXX-XX-6789
 ```
 
 # 18
+
 What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
+
 ```ruby
 class Shape
   @@sides = nil
@@ -561,7 +597,9 @@ When instantiating a new `Triangle` object, the `initialize` constructor method 
 This demonstrates that class variables are scoped at the *class level*, meaning any instances of the class can interact with its value.
 
 # 19
+
 What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
+
 -
 The `attr_accessor` method creates both a getter and setter method for its argument attribute. For example, `attr_accessor :name` creates both `name` and `name=` methods for the `@name` instance variable.
 
@@ -587,8 +625,11 @@ derek.paycheck = 'Not enough...'
 Here, we can see and change the job of the clarinetist `derek`, which may be relevant. We can also pay him, but he may not want to share his finances with others. Lastly, we can see he plays the `'clarinet'`, but obviously cannot change that; otherwise, he would no longer be a clarinetist.
 
 # 20
+
 What is the difference between states and behaviors?
+
 -
+
 States refer to the value of an object's attributes, which may represent the cost, color, name, or more of the object. The behaviors represent what the object can do, or its methods with Ruby.
 ```ruby
 class Musician
@@ -606,3 +647,147 @@ derek = Musician.new('Derek', 'clarinet')
 derek.play
 ```
 In this example, the `Musician` object `derek` has a state of `'Derek'` for a `name` and `'clarinet'` for the `instrument` they play. `derek` can play his instrument as a behavior by using the `play` instance method, which will output `Derek is playing their clarinet!`.
+
+# 21
+
+What is the difference between instance methods and class methods?
+
+- Instance methods can be called on any instantiated object within its respective class, while class methods are only called on the class itself and can be called without any objects instantiated. While an instance method has a standard `def...end` definition within the class structure, a class method name *must* be prepended with `self.`
+
+```ruby
+class Musician
+  @@total_musicians = 0
+
+  def initialize(name, instrument)
+    @name = name
+    @instrument = instrument
+    @@total_musicians += 1
+  end
+
+  def self.total
+    @@total_musicians
+  end
+
+  def play
+    puts "#{@name} is playing their #{@instrument}."
+  end
+end
+
+derek = Musician.new('Derek', 'clarinet')
+bob = Musician.new('Bob', 'saxophone')
+
+derek.play
+puts Musician.total
+```
+
+## 22
+
+What are collaborator objects, and what is the purpose of using them in OOP? Give an example of how we would work with one.
+
+-
+
+Collaborator objects are objects that are stored as state within another object. While these can include any kind of object, including strings, numbers, arrays, and so on, they typically reference *custom objects*, and a collaborative relationship is established between the two classes. This allows the programmer to further divide their codebase into smaller, cohesive pieces.
+
+```ruby
+class Musician
+  def initialize(name, instrument)
+    @name = name
+    @instrument = instrument
+  end
+end
+
+class Instrument
+  def initialize(type)
+    @type = type
+  end
+end
+
+clarinet = Instrument.new('clarinet')
+derek = Musician.new('Derek', clarinet)
+```
+
+## 23
+
+How and why would we implement a fake operator in a custom class? Give an example.
+
+-
+
+Many of the "operators" that are used throughout the Ruby language are methods calls *disguised* as operators through the use of *syntactical sugar*, allowing the code to be more readable and predictable. While many of the pre-existing Ruby classes and modules have their own defintions to these methods, a custom class does not by default; therefore, if we wish to implement its functionality into our program, we have to define its operation.
+
+```ruby
+class Person
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+
+  def >(other)
+    age > other.age
+  end
+
+  protected
+
+  attr_reader :age
+end
+
+sally = Person.new('Sally', 32)
+barbara = Person.new('Barbara', 55)
+
+sally > barbara  # => false
+```
+
+## 24
+
+What are the use cases for `self` in Ruby, and how does `self` change based on the scope it is used in? Provide examples.
+
+-
+
+In Ruby, `self` represents the *calling object* and is used to disambiguate the intention of a method call. When used within an instance method, `self` represents the current instance of the class; outside of that, including within a class method defintion, it represents the class or module itself.
+
+```ruby
+module Testable
+  self  # => Testable
+end
+
+class Test
+  self  # => Test
+
+  def testing
+    self  # => #<Test:0x000000010eda7410>
+  end
+end
+```
+
+In this example, we can see three different variations of `self`. First within the `Testable` module: because `self` is not within an instance method, it references the module itself, and therefore returns `Testable`. Next, within the `Test` class: this performs in a similar manner, but instead returns the `Test` class due to its location within the `Test` class structure. Lastly, within the `testing` instance method: because this method is called on the current instance of the `Test` class, it will return the object ID of that class.
+
+# 25
+
+What does the above code demonstrate about how instance variables are scoped?
+
+```ruby
+class Person
+  def initialize(n)
+    @name = n
+  end
+  
+  def get_name
+    @name
+  end
+end
+
+bob = Person.new('bob')
+joe = Person.new('joe')
+
+puts bob.inspect # => #<Person:0x000055e79be5dea8 @name="bob">
+puts joe.inspect # => #<Person:0x000055e79be5de58 @name="joe">
+
+p bob.get_name # => "bob"
+```
+
+This example demonstrates how instance variables are scoped at the *object level*, meaning they are only accessible within the current instance of the class.
+
+On line 11, the object `bob` is instantiated from the `Person` class and passes the string `'bob'` as an argument into its `initialize` constructor method, binding it to the parameter `n`. Within the method, this value is then assigned to the initialized instance variable `@name`.
+
+On line 12, the `joe` object undergos the same process, passing in `'joe'` instead and assigning it to the initialized `@name` instance variable. When inspecting both objects on lines 14 and 15, we can see that `@name` references the string name that was instantiated with its respective object, proving that the `@name` instance variable is only used within the current instance of its class.
+
+On line 17, the `get_name` instance method is called on the `bob` object, which simply outputs the string value `"bob"` that was assigned to it. Rather than becoming reassigned after the instantiation of `joe`, both objects simply had their own string object assigned to it.
