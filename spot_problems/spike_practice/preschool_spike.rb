@@ -50,7 +50,7 @@ module Feedable
 end
 
 class Preschool
-  def initalize
+  def initialize
     @staff = []
     @students = []
   end
@@ -87,7 +87,7 @@ class Student
 
   attr_reader :name
 
-  def initalize(name)
+  def initialize(name)
     @name = name
   end
 

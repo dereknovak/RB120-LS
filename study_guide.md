@@ -54,6 +54,23 @@ michael = Musician.new  # <= Object is instantiated
 
 Instance variables are variables that are scoped at the *object level*, making them only available within the current instance of the class.
 
+```ruby
+class Musician
+  def initialize(name, instrument, job)
+    @name = name
+    @instrument = instrument
+    @job = job
+  end
+end
+
+bob = Musician.new('Bob', 'trumpet', 'soloist')         
+steve = Musician.new('Steve', 'violin', 'concertmaster')  
+
+p bob    # => #<Musician:0x00000001030b74e0 @name="Bob", @instrument="trumpet", @job="soloist">
+p steve  # => #<Musician:0x00000001030b7198 @name="Steve", @instrument="violin", @job="concertmaster">
+```
+
+
 ## Class Variable
 
 Class variables are variables that scoped at the *class level*, making them available to all instances of the class.
@@ -74,12 +91,12 @@ class Sheep
   end
 end
 
-puts Sheep.total  # 0
+Sheep.total  # => 0
 
 sheep1 = Sheep.new
 sheep2 = Sheep.new
 
-puts Sheep.total  # 2
+Sheep.total  # => 2
 ```
 
 ## Constants
@@ -196,32 +213,80 @@ end
 derek = Musician.new('Derek', 'clarinet')
 bob = Musician.new('Bob', 'saxophone')
 
-derek.play
-puts Musician.total
+derek.play  # Derek is playing their clarinet.
+Musician.total  # => 2
 ```
 ## Module
 
 "A module is a collection of behaviors that is usable in other classes via mixins."
 
 
-A module contains a collection of behaviors that can used by other classes through mixins. They can also be used to group similar methods together via *namespacing*, allowing more organized code and preventing collisions through similarly named classes.
+A module contains a collection of behaviors that can used by other classes through mixins. They can also be used to group similar classes together via *namespacing*, preventing collisions through similarly named classes.
+
+The 3 purposes of modules:
+1. Interface inheritance
+2. Namespacing
+3. Container modules
 
 ### Mixin
 
 A mixin refers to a module that has been "mixed-in" to a class via the `include` keyword, allowing its behaviors to be used within the class.
 
+```ruby
+module Runable
+  def run
+    puts "I'm running!"
+  end
+end
+
+class Person
+  include Runable
+end
+
+Person.new.run  # => "I'm running!"
+```
+
 ### Namespacing
 
 "Namespacing means organizing similar classes under a module."
 
+Namespacing is used to organize similar classes within a module, preventing collisions with other classes that share the same name. When referencing a namespaced class, the namespace resolution operator must be used to properly locate the class structure.
+
 ```ruby
-module Orchestra
-  class Violinist; end
-  class Clarinetist; end
-  class Trumpeter; end
-  class Percussionist; end
+module Toys
+  class Truck; end
+  class Car; end
+end
+
+Toys::Truck.new
+
+module Vehicles
+  class Truck; end
+  class Car; end
+end
+
+Vehicles::Truck.new
+```
+
+### Container Methods
+
+"This involves using modules to house other methods. This is very useful for methods that seem out of place within your code."
+
+Container methods, also called *module methods*, are used to house methods that do not seem to organizationly fit anywhere in the codebase. Rather than crowd a class structure with extraneous methods, these methods can be extracted to their own module for better codebase organization.
+
+```ruby
+module ProgramFunctionality
+  def prompt(messsage)
+    puts "=> #{message}"
+  end
+
+  def continue_program
+    puts "Press [ENTER] to continue"
+    gets
+  end
 end
 ```
+
 ## Attributes
 
 "We can think of attributes as the different charactersistic that make up an object."
@@ -243,7 +308,7 @@ end
 
 "Encapsulation lets us hide the internal representation of an object from the outside and only expose the methods and properties that users of the object need."
 
-Encapsulation allows us to hide the state of an object from outside its resepctive class, exposing only the attributes and behaviors required by the users. In Object Oriented Programming, this is primarily achieved through Method Access Control, which allows or restricts these properties by the  implementation of public, protected, or private methods.
+Encapsulation allows us to hide the state of an object from outside its respective class, exposing only the attributes and behaviors required by the users. In Object Oriented Programming, this is primarily achieved through Method Access Control, which allows or restricts these properties by the  implementation of public, protected, or private methods.
 
 ### Method Access Control
 
@@ -261,7 +326,7 @@ class Human
  end
  
  def encripted_ssn
-   "XXX-XX-#{ssn[7, 4]}"
+   "XXX-XX-#{ssn.to_s[5, 4]}"
  end
 
  private
@@ -269,8 +334,8 @@ class Human
  attr_reader :ssn
 end
 
-charlie = Human.new('Charlie', '123-45-6789')
-puts charlie.encripted_ssn  # XXX-XX-6789
+charlie = Human.new('Charlie', 123456789)
+charlie.encripted_ssn  # => "XXX-XX-6789"
 ```
 
 ### Protected methods
@@ -313,21 +378,13 @@ Class inheritance use a behavior from a shared parent-class, allowing each subcl
 ```ruby
 class Musician
   def play
-    "Playing my "
+    "Playing my instrument!"
   end
 end
 
-class Clarinetist < Musician
-  def play
-    puts super + 'clarinet'
-  end
-end
+class Clarinetist < Musician; end
 
-class Violinist < Musician
-  def play
-    puts super + 'violin'
-  end
-end
+class Violinist < Musician; end
 
 claire = Clarinetist.new
 victor = Violinist.new
@@ -335,7 +392,7 @@ victor = Violinist.new
 [claire, victor].each(&:play)
 ```
 
-Interface inheritance uses mixins to share a behavior with various classes, allowing each object from those classes the ability to respond to the behavior.
+Interface inheritance uses mixins to share a behavior with various *related* classes, allowing each object from those classes the ability to respond to the behavior. It is best utilized when multiple, but not all, subclasses from a common parent class share a behavior; rather than defining the behavior in the parent class, the behavior can be extracted to a module and added as a mixin to the relevant subclasses.
 
 ```ruby
 module Runable
@@ -344,18 +401,22 @@ module Runable
   end
 end
 
-class Athlete
+class Person
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+end
+
+class Adult < Person
   include Runable
 end
 
-class Dog
+class Child < Person
   include Runable
 end
 
-aaron = Athlete.new
-max = Dog.new
-
-[aaron, max].each(&:run)
+class Baby < Person; end
 ```
 
 *** When deciding on whether to use class inheritance or a mixin, first determine what kind of relationship it shares with the class. If it employs a 'is a' relationship, class inheritance should be used, while 'has a' relationships should use a mixin.
@@ -364,7 +425,7 @@ max = Dog.new
 
 "Duck typing occurs when objects of different *unrelated* types both respond to the same method name."
 
-Duck typing, stemmed from the phrase "if it walks and talks like a duck, it must be a duck," occurs when multiple classes share a common behavior, allowing objects from either class the ability to respond to it. While the objects should be unrelated, their behaviors should perform a similar action.
+Duck typing, stemmed from the phrase "if it walks and quacks like a duck, it must be a duck," occurs when multiple *unrelated* classes share a common behavior, allowing objects from either class the ability to respond to it. While the objects should be unrelated, their behaviors should perform a similar action.
 
 ```ruby
 class CashRegister
