@@ -27,7 +27,7 @@
 
 "Object Oriented Programming is a programming paradigm that was created to deal with the growing complexity of large software systems."
 
-Object Oriented Programming is a programming paradigm that was formed as a response to the growing complexity of large software systems, dividing data storage and functionality into small chunks that come together to perform larger tasks.
+Object Oriented Programming is a programming paradigm that was formed as a response to the expanding complexity of large software systems, dividing data storage and functionality into small chunks that come together to perform bigger tasks.
 
 ### Benefits of using OOP:
 1. Creating objects allows for better code abstraction
@@ -110,33 +110,23 @@ A constant is a variable that does not change throughout the code.
 Constants have lexical scope, which means that their value is only available within the structure where they're defined, unless explicitly referenced by the scope resolution operator. When searching for a constant, Ruby first looks lexically, then through inheritance, and concludes with the main scope.
 
 ```ruby
-module Orchestra
+class Instrument
   KEY = 'C'
 
-  class Musician
-    include Orchestra
-
-    def transpose
-      puts "Transposing to the key of #{self.class::KEY}"
-    end
-  end
-
-  class Violinist < Musician; end
-
-  class Clarinetist < Musician
-    KEY = 'B-flat'
-  end
-  
-  class Hornist < Musician
-    KEY = 'F'
+  def transpose
+    puts "Transposing to the key of #{self.class::KEY}"
   end
 end
 
-victor = Orchestra::Violinist.new
-claire = Orchestra::Clarinetist.new
-henry = Orchestra::Hornist.new
+class Clarinet < Instrument
+  KEY = 'B-flat'
+end
 
-[victor, claire, henry].each(&:transpose)
+class FrenchHorn < Instrument
+  KEY = 'F'
+end
+
+class Violin < Instrument; end
 ```
 
 ## Constructor method
@@ -161,7 +151,7 @@ dominos.toppings  # => ['sausage', 'black olives', 'mushrooms']
 
 ## Getter and Setter methods
 
-Interacting with the state of an object throughout Object Oriented Programming is accomplished primarily through the use of getter and setter methods. Ruby employs an easy method of defining these methods through the use of the `attr_*` method, creating getter methods with `attr_reader`, setter methods with `attr_writer`, and both simultaneously with `attr_accessor`,  passing each attribute in as a symbol argument.
+Interacting with the state of an object throughout Object Oriented Programming is accomplished primarily through the use of getter and setter methods. Ruby employs an easy process of defining these methods through the use of the `attr_*` method, creating getter methods with `attr_reader`, setter methods with `attr_writer`, and both simultaneously with `attr_accessor`,  passing each attribute in as a symbol argument.
 
 ```ruby
 class Person
@@ -189,7 +179,7 @@ jimmy.gender  # => NoMethodError
 
 ## Instance method vs Class method
 
--nstance methods can be called on any instantiated object within its respective class, while class methods are only called on the class itself and can be called without any objects instantiated. While an instance method has a standard `def...end` definition within the class structure, a class method *must* be prepended with `self.` (`self.my_method`).
+Instance methods can be called on any instantiated object within its respective class, while class methods are only called on the class itself and can be called without any objects instantiated. While an instance method has a standard `def...end` definition within the class structure, a class method *must* be prepended with `self.` (`self.my_method`).
 
 ```ruby
 class Musician
@@ -220,8 +210,7 @@ Musician.total  # => 2
 
 "A module is a collection of behaviors that is usable in other classes via mixins."
 
-
-A module contains a collection of behaviors that can used by other classes through mixins. They can also be used to group similar classes together via *namespacing*, preventing collisions through similarly named classes.
+A module contains a collection of behaviors that can used by other classes through mixins. They can also be used to group similar classes together via *namespacing*, preventing collisions with other classes that share the same name.
 
 The 3 purposes of modules:
 1. Interface inheritance
@@ -308,11 +297,15 @@ end
 
 "Encapsulation lets us hide the internal representation of an object from the outside and only expose the methods and properties that users of the object need."
 
-Encapsulation allows us to hide the state of an object from outside its respective class, exposing only the attributes and behaviors required by the users. In Object Oriented Programming, this is primarily achieved through Method Access Control, which allows or restricts these properties by the  implementation of public, protected, or private methods.
+Encapsulation allows us to hide the state of an object from outside its respective class, exposing only the attributes and behaviors required by the users. In Object Oriented Programming, this is primarily achieved through Method Access Control, which allows or restricts access to these properties by the implementation of public, protected, or private methods.
 
 ### Method Access Control
 
 "Access Control is a concept that exists in a number of programming languages, including Ruby. It is generally implemented through the use of access modifiers. The purpose of access modifiers is to allow or restrict access to a particular thing."
+
+Method Access Control allows or restricts access to specific properties by the implementation of *access modifiers*; in Ruby, these modifiers include the `public`, `protected`, and `private` keywords.
+
+By default, all defined instance methods -- excluding `initialize` -- are considered public methods.
 
 ### Private methods
 
@@ -336,6 +329,7 @@ end
 
 charlie = Human.new('Charlie', 123456789)
 charlie.encripted_ssn  # => "XXX-XX-6789"
+charlie.ssn  # => NoMethodError 'private method'
 ```
 
 ### Protected methods
@@ -373,7 +367,7 @@ Polymorphism is the ability for multiple data types to respond differently to a 
 
 Polymorphism via inheritance can be achieved through two different approaches, *class* and *interface* inheritance.
 
-Class inheritance use a behavior from a shared parent-class, allowing each subclass to respond to it. Individual subclasses may have unique implemetation of the behavior, *overriding* its execution.
+Class inheritance use a behavior from a shared parent-class, allowing each subclass to respond to it. Individual subclasses may have unique implemetations of the behavior, *overriding* its execution.
 
 ```ruby
 class Musician
@@ -449,7 +443,7 @@ end
 
 "Collaborator objects allow you to chop up and modularize the problem domain into cohesive pieces"
 
-Collaborator objects are objects that are stored as state within another object. While these can include any kind of object, including strings, numbers, arrays, and so on, they typically reference *custom objects*, and a collaborative relationship is established between the two classes. This allows the programmer to further divide their codebase into smaller, cohesive pieces.
+Collaborator objects are objects that are stored as state within another object. While these can include any kind of object, including strings, numbers, arrays, and so on, they typically reference *custom objects*, as a collaborative relationship is established between the two classes. This allows the programmer to further divide their codebase into smaller, more cohesive pieces.
 
 ```ruby
 class Musician
@@ -471,35 +465,55 @@ derek = Musician.new('Derek', clarinet)
 
 ## self
 
-In Ruby, `self` represents the *calling object* and is used to disambiguate the intention of a method call. When used within an instance method, `self` represents the current instance of the class; outside of that, including within a class method defintion, it represents the class or module itself.
+In Ruby, `self` represents the *calling object* and is used to disambiguate the intention of a method call. When used within an instance method, `self` represents the current instance of the class; outside of it, including within a class method defintion, it represents the structure where it is invoked.
 
 ```ruby
 module Drivable
   def drive
-    puts "Driving my #{self.class.to_s.downcase}."
+    puts "Driving my #{self.class}."
   end
 end
 
 class Vehicle
   include Drivable
+
+  attr_accessor :color
+
+  def paint(color)
+    self.color = color
+  end
+
+  def self.fuel_economy(miles, gallons)
+    "#{miles / gallons} mpg"
+  end
 end
 
 class Car < Vehicle; end
 class Truck < Vehicle; end
 
-Car.new.drive
-Truck.new.drive
+mazda = Car.new
+ford = Truck.new
+
+mazda.drive  # Driving my Car.
+ford.drive  # Driving my Truck.
+
+mazda.paint('orange')
+mazda.color  # => "orange"
+
+Car.fuel_economy(400, 12)  # => "33 mpg"
 ```
 
 ## Method Lookup Path
 
 "The Method Lookup Path is the order in which classes are inspected when you call a method."
 
-The Method Lookup Path is the order in which Ruby searches for a method definition through inheritance when it the method is invoked. Ruby will start in the current class, check the mixins from last to first defined, then move to its superclass, executing the first definition it finds. We can view the current method lookup path by calling the `ancestors` class method on the object's class.
+The Method Lookup Path is the order in which Ruby searches for a method definition through the chain of inheritance when it is invoked. Ruby will begin in the current class, check the mixins from last to first included, then move to its superclass, executing the first definition it finds. We can view the current method lookup path by calling the `ancestors` class method on the object's class.
 
 ## super
 
 "Ruby provides us with the super keyword to call methods earlier in the method lookup path. When you call super from within a method, it searches the method lookup path for a method with the same name, then invokes it."
+
+The `super` keyword allows a program to invoke the closest method in the class's chain of inheritance that shares the name of the current method invocation, allowing its functionality to be executed at the location of the keyword. This allows for less repetitive code, as more consistently used functionality can be housed in a parent class's method, while the subclass has a more specific implemenation.
 
 ```ruby
 class Occupation
@@ -526,8 +540,27 @@ claire.work
 
 ## Class inheritance vs mixin
 
-"If there's an "is-a" relationship, class inheritance is usually the correct choice. If there's a "has-a" relationship, interface inheritance is generally a better choice."
+"
+- You can only subclass (class inheritance) from one class. You can mix in as many modules (interface inheritance) as you'd like.
+- If there's an "is-a" relationship, class inheritance is usually the correct choice. If there's a "has-a" relationship, interface inheritance is generally a better choice. For example, a dog "is an" animal and it "has an" ability to swim.
+- You cannot instantiate modules. In other words, objects cannot be created from modules.
+"
 
+When determining whether to implement class inheritance versus using a mixin, there are three things to keep in mind:
+
+1. Objects cannot be instantiated from modules.
+2. A class can only inherit from one parent class; alternatively, there is no (reasonable) limit to how many modules can be mixed into a class.
+3. If the two structures in question share a "is-a" relationship, class inheritance is more suitable. If they share a "has-a" relationship, using a mixin is more appropriate.
+
+```ruby
+module Swimable; end
+
+class Human; end
+
+class Athlete < Human  # An athlete "is-a" human
+  include Swimable     # An athlete "has-a" ability to swim
+end
+```
 ## Equivalence
 
 `==` vs `equal?` vs `eql?` vs `===`
@@ -539,6 +572,23 @@ The `===` (case) operator compares the its operands, returning `true` if its lef
 The `equal?` method compares the object IDs of its operands, returning `true` if they are the same object and `false` otherwise.
 
 The `eql?` method compares its two operands, returning `true` if both the class and value are the same and `false` otherwise.
+
+```ruby
+class Person
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+jack = Person.new("Jonathon")
+john = Person.new("Jonathon")
+
+jack.name == john.name       # => true
+jack.name.equal?(john.name)  # => false
+jack.name.eql?(john.name)    # => true
+```
 
 ## Fake operators
 
@@ -576,12 +626,20 @@ Actual Ruby Operators:
 - Scope resolution operator
 - Method resolution operator
 
--------------------------------
+## Accidental Method Override
 
+Don't use this example, but build from it
+```ruby
+class Child
+  def say_hi
+    p "Hi from Child."
+  end
 
+  def send
+    p "send from Child..."
+  end
+end
 
-## Reading OO code
-
-
-## Create a code spike
-
+lad = Child.new
+lad.send :say_hi
+```

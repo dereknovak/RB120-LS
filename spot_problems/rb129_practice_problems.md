@@ -793,3 +793,99 @@ On line 11, the object `bob` is instantiated from the `Person` class and passes 
 On line 12, the `joe` object undergos the same process, passing in `'joe'` instead and assigning it to the initialized `@name` instance variable. When inspecting both objects on lines 14 and 15, we can see that `@name` references the string name that was instantiated with its respective object, proving that the `@name` instance variable is only used within the current instance of its class.
 
 On line 17, the `get_name` instance method is called on the `bob` object, which simply outputs the string value `"bob"` that was assigned to it. Rather than becoming reassigned after the instantiation of `joe`, both objects simply had their own string object assigned to it.
+
+# 26
+
+How do class inheritance and mixing in modules affect instance variable scope? Give an example.
+
+-
+
+When inheriting instance methods through either class inheritance or interface inheritance, the methods become available to the class as if it were defined there. Because of this, instance variables are able to be accessed within the instance method, even if they are located in either of these inherited containers.
+
+```ruby
+module Runable
+  def run
+    puts "#{@name} is running!"
+  end
+end
+
+class Person
+  def sleep
+    puts "#{@name} is sleeping!"
+  end
+end
+
+class Adult < Person
+  include Runable
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+derek = Adult.new('Derek')
+derek.run  # => Derek is running!
+derek.sleep  # => Derek is sleeping!
+```
+
+# 27
+
+How does encapsulation relate to the public interface of a class?
+
+-
+
+Encapsulation allows us to hide the state of an object from outside its respective class, exposing only the attributes and behaviors required by the users. In Object Oriented Programming, this is primarily achieved through Method Access Control, which allows or restricts access to these properties by the implementation of public, protected, or private methods. Because all instance methods, excluding `initialize`, are considered public method by default, their functionality is accessible outside of the class structure.
+
+However, if these instance variables are not defined within the class structure, any attributes with assigned state are encapsulated within the class structure, as there is no way that a user can access this information from outside of the structure.
+
+# 28
+
+What is output and why? How could we output a message of our choice instead?
+
+```ruby
+class GoodDog
+  DOG_YEARS = 7
+
+  attr_accessor :name, :age
+
+  def initialize(n, a)
+    self.name = n
+    self.age  = a * DOG_YEARS
+  end
+end
+
+sparky = GoodDog.new("Sparky", 4)
+puts sparky
+```
+
+Line 13 will output the object id `#<GoodDog:0x0000000101067370>`. This output represents the object ID referenced by `sparky`, and the `puts` method invocation automatically applies the `to_s` method to the ID, converting it to a string value. To create a more readable representation of the object, we can define our own `to_s` instance method within the `GoodDog` class that will *override* the default `to_s`. Within this method, we can instruct the program to return any specific value that we'd like.
+
+```ruby
+class GoodDog
+  # Omitted for brevity
+
+  def to_s
+    "A #{age} year old dog named #{name}."
+  end
+end
+
+sparky = GoodDog.new("Sparky", 4)
+puts sparky  # => A 28 year old dog named Sparky.
+```
+
+How is the output above different than the output of the code below, and why?
+
+```ruby
+class GoodDog
+  DOG_YEARS = 7
+
+  attr_accessor :name, :age
+
+  def initialize(n, a)
+    @name = n
+    @age  = a * DOG_YEARS
+  end
+end
+```
+
+The output will be the same. This occurs because `self.name =` is actually a *setter method* in action, which assigns or reassigns the value of `@name`. In the second example, rather than calling the setter method within `initialize`, `@name` and `@age` are directly assigned.
