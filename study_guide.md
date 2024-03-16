@@ -27,7 +27,7 @@
 
 "Object Oriented Programming is a programming paradigm that was created to deal with the growing complexity of large software systems."
 
-Object Oriented Programming is a programming paradigm that was formed as a response to the expanding complexity of large software systems, dividing data storage and functionality into small chunks that come together to perform bigger tasks.
+Object Oriented Programming is a programming paradigm that was formed as a response to the expanding complexity of large software systems, dividing data storage and functionality into small chunks that come together to perform larger tasks.
 
 ### Benefits of using OOP:
 1. Creating objects allows for better code abstraction
@@ -216,6 +216,20 @@ The 3 purposes of modules:
 1. Interface inheritance
 2. Namespacing
 3. Container modules
+
+### Class vs Module
+
+Similarities
+
+1. Both are structures and can be thought of as containers.
+2. Both have the ability to inherit, though this is more common to see in classes.
+3. Both use the same PascalCase syntax.
+
+Notable differences
+
+1. Classes represent the attributes and behaviors of an object, while modules are simply just act as containers.
+2. An object can be instantiated from a class, thereby encapsulating state. Modules cannot.
+3. A class can only inherit from one parent class, but can inherit an limitless number of modules.
 
 ### Mixin
 

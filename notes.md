@@ -296,4 +296,15 @@ end
 Vehicles::Truck.new
 ```
 
+Study session with Scott
 
+Difference between classes and modules
+  - start big then zoom in
+
+Define both before compairng
+
+Study session with Ilke
+
+There has to be an intention behind Duck Typing
+
+Additional problems from Kip: https://medium.com/@marwan.zaarab/rb129-interview-assessment-prep-e2f120330240
