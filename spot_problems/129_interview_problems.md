@@ -201,7 +201,7 @@ end
 ```ruby
 module Flightable
   def fly
-    "I am Superman, I am a superhero, and I can fly!"
+    puts "I am #{}, I am a #{}, and I can fly!"
   end
 end
 
@@ -211,6 +211,8 @@ class Superhero
   attr_accessor :ability
   
   def self.fight_crime
+    puts "I am #{}"
+    # cannot use `puts` here
   end
   
   def initialize(name)
@@ -234,7 +236,7 @@ end
 
 superman = Superhero.new('Superman')
 
-p superman.fly # => I am Superman, I am a superhero, and I can fly!
+p superman.fly # => I am Superman, I am a Superhero, and I can fly!
 
 LSMan.fight_crime 
 # => I am LSMan!

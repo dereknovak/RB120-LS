@@ -371,6 +371,37 @@ selmer_privilage = Clarinet.new(5000)
 puts buffet_tosca.nicer_than?(selmer_privilege)  # true
 ```
 
+### Example
+
+```ruby
+class Human
+ def initialize(name, age, ssn)
+   @name = name
+   @age = age
+   @ssn = ssn
+ end
+
+ def older_than?(other)
+  age > other.age
+ end
+ 
+ def encripted_ssn
+   "XXX-XX-#{ssn.to_s[5, 4]}"
+ end
+
+ protected
+
+ attr_reader :age
+
+ private
+
+ attr_reader :ssn
+end
+
+charlie = Human.new('Charlie', 30, 123456789)
+stephen = Human.new('Stephen', 18, 987654321)
+```
+
 ## Polymorphism
 
 "Polymorphism is the ability for different types of data to respond to a common interface."
@@ -384,20 +415,21 @@ Polymorphism via inheritance can be achieved through two different approaches, *
 Class inheritance use a behavior from a shared parent-class, allowing each subclass to respond to it. Individual subclasses may have unique implemetations of the behavior, *overriding* its execution.
 
 ```ruby
-class Musician
-  def play
-    "Playing my instrument!"
+class Human
+  def sleep
+    puts "I'm sleeping!"
   end
 end
 
-class Clarinetist < Musician; end
+class Adult < Human; end
+class Child < Human; end
+class Baby < Human; end
 
-class Violinist < Musician; end
+[Adult.new, Child.new, Baby.new].each(&:sleep)
 
-claire = Clarinetist.new
-victor = Violinist.new
-
-[claire, victor].each(&:play)
+# I'm sleeping!
+# I'm sleeping!
+# I'm sleeping!
 ```
 
 Interface inheritance uses mixins to share a behavior with various *related* classes, allowing each object from those classes the ability to respond to the behavior. It is best utilized when multiple, but not all, subclasses from a common parent class share a behavior; rather than defining the behavior in the parent class, the behavior can be extracted to a module and added as a mixin to the relevant subclasses.
@@ -409,22 +441,23 @@ module Runable
   end
 end
 
-class Person
-  def initialize(name, age)
-    @name = name
-    @age = age
-  end
-end
+class Human; end
 
-class Adult < Person
+class Adult < Human
   include Runable
 end
 
-class Child < Person
+class Child < Human
   include Runable
 end
 
-class Baby < Person; end
+class Baby < Human; end
+
+[Adult.new, Child.new, Baby.new].each(&:run)
+
+# I'm running!
+# I'm running!
+# undefined method `run' for #<Baby:0x000000010f832fb0> (NoMethodError)
 ```
 
 *** When deciding on whether to use class inheritance or a mixin, first determine what kind of relationship it shares with the class. If it employs a 'is a' relationship, class inheritance should be used, while 'has a' relationships should use a mixin.
@@ -438,17 +471,19 @@ Duck typing, stemmed from the phrase "if it walks and quacks like a duck, it mus
 ```ruby
 class CashRegister
   def refill
-    puts "Putting money into the register."
+    @money = 300
   end
 end
 
-class Drink
+class SodaMachine
   def refill
-    puts "Topping off the customer's cup."
+    @pepsi = 100
+    @sprite = 100
   end
 end
 
-[CashRegister.new, Drink.new].each(&:refill)
+# Morning routine
+[CashRegister.new, SodaMachine.new].each(&:refill)
 ```
 
 ## Collaborator Objects
